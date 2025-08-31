@@ -85,8 +85,8 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900 mb-1">Phone</h4>
-                    <p className="text-gray-600">+91 94428 75000</p>
-                    <p className="text-gray-600">+91 98429 12345</p>
+                    <p className="text-gray-600">04324-233844</p>
+                    <p className="text-gray-600">8940448844</p>
                   </div>
                 </div>
 
@@ -96,8 +96,8 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900 mb-1">Email</h4>
-                    <p className="text-gray-600">info@sarvamfinance.com</p>
-                    <p className="text-gray-600">loans@sarvamfinance.com</p>
+                    <p className="text-gray-600">dhinesh@sarvamgroups.in</p>
+                    <p className="text-gray-600">info@sarvamgroups.in</p>
                   </div>
                 </div>
 
@@ -107,8 +107,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900 mb-1">Business Hours</h4>
-                    <p className="text-gray-600">Monday - Saturday: 9:00 AM - 7:00 PM</p>
-                    <p className="text-gray-600">Sunday: 10:00 AM - 2:00 PM</p>
+                    <p className="text-gray-600">Monday - Friday: 10:00 AM - 7:00 PM</p>
                   </div>
                 </div>
               </div>
