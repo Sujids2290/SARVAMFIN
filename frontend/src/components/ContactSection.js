@@ -64,7 +64,7 @@ const ContactSection = () => {
                     <span className="text-white text-xl">🏢</span>
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">SARVAM FINANCE AND CHIT FUNDS LTD</h4>
+                    <h4 className="font-bold text-gray-900 mb-1">SARVAM FINANCE AND CHITFUNDS PVT LTD</h4>
                     <p className="text-gray-600">Your trusted financial partner in Karur</p>
                   </div>
                 </div>
