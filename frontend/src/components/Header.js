@@ -55,6 +55,12 @@ const Header = () => {
             >
               Chit Funds
             </button>
+            <Link 
+              to="/calculators"
+              className="text-gray-700 hover:text-red-600 font-medium transition-colors duration-200"
+            >
+              Calculators
+            </Link>
             <button 
               onClick={() => scrollToSection('ceo')}
               className="text-gray-700 hover:text-red-600 font-medium transition-colors duration-200"
