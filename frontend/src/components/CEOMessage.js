@@ -16,12 +16,15 @@ const CEOMessage = () => {
             {/* CEO Photo */}
             <div className="text-center mb-8 lg:mb-0">
               <div className="relative inline-block">
-                <img 
-                  src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/7pqm7d7f_ad42e067-49a4-4e7e-8007-1c31e8306808.jpg"
-                  alt="Dhinesh Periyasamy - CEO, Sarvam Finance"
-                  className="w-64 h-64 rounded-full object-cover mx-auto card-shadow border-4 border-white"
-                />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div className="w-48 h-64 overflow-hidden rounded-lg border-4 border-white shadow-lg">
+                  <img 
+                    src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/7pqm7d7f_ad42e067-49a4-4e7e-8007-1c31e8306808.jpg"
+                    alt="Dhinesh Periyasamy - CEO, Sarvam Finance"
+                    className="w-full h-full object-cover brightness-110 contrast-105"
+                    style={{filter: 'brightness(1.1) contrast(1.05) saturate(1.1)'}}
+                  />
+                </div>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/10 to-transparent"></div>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mt-6">Dhinesh Periyasamy</h3>
               <p className="text-red-600 font-semibold">Chief Executive Officer</p>
