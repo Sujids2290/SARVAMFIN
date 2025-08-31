@@ -14,7 +14,7 @@ const HeroSection = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwxfHxzYXZpbmdzJTIwbW9uZXklMjBncm93dGh8ZW58MHx8fHwxNzU2NjQ3NTQ5fDA&ixlib=rb-4.1.0&q=85')`
+          backgroundImage: `url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwxfHxmaW5hbmNpYWwlMjBncm93dGh8ZW58MHx8fHwxNzU2NjIwNjE5fDA&ixlib=rb-4.1.0&q=85')`
         }}
       ></div>
       {/* Semi-transparent Red Overlay */}
@@ -25,13 +25,34 @@ const HeroSection = () => {
           {/* Left Content */}
           <div className="fade-in">
             <h1 className="hero-title text-4xl md:text-6xl font-bold mb-6 text-shadow">
-              Your Trusted Financial Partner
+              Grow Your<br/>Money<br/>With Trust
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-red-100 leading-relaxed">
-              Expert solutions for <span className="font-semibold text-white">gold loans</span>, 
+              Your trusted partner for <span className="font-semibold text-white">Karur gold loans</span>, 
               <span className="font-semibold text-white"> chit funds</span>, and 
-              <span className="font-semibold text-white"> deposits</span> - serving our community with integrity for over 13 years.
+              <span className="font-semibold text-white"> deposits</span>. Experience reliable financial services with competitive rates and personalized solutions.
             </p>
+            
+            {/* Feature Highlights */}
+            <div className="grid grid-cols-2 gap-6 mb-8">
+              <div className="text-center">
+                <h3 className="text-lg font-bold mb-2">Up to 12% Returns</h3>
+                <p className="text-red-200 text-sm">On deposits</p>
+              </div>
+              <div className="text-center">
+                <h3 className="text-lg font-bold mb-2">From 12% Interest</h3>
+                <p className="text-red-200 text-sm">On loans</p>
+              </div>
+              <div className="text-center">
+                <h3 className="text-lg font-bold mb-2">Secure & Trusted</h3>
+                <p className="text-red-200 text-sm">RBI compliant</p>
+              </div>
+              <div className="text-center">
+                <h3 className="text-lg font-bold mb-2">Expert Guidance</h3>
+                <p className="text-red-200 text-sm">Personal support</p>
+              </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4">
               <button 
                 onClick={() => scrollToSection('loans')}
@@ -40,44 +61,37 @@ const HeroSection = () => {
                 Explore Loans
               </button>
               <button 
-                onClick={() => scrollToSection('contact')}
+                onClick={() => scrollToSection('deposits')}
                 className="btn-secondary border-white text-white hover:bg-white hover:text-red-600"
               >
-                Contact Us
+                View Deposits
               </button>
             </div>
           </div>
 
-          {/* Right Content - Image */}
+          {/* Right Content - Stats Cards */}
           <div className="mt-12 lg:mt-0 slide-up">
-            <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1543286386-2e659306cd6c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxmaW5hbmNpYWwlMjBwcm9ncmVzc3xlbnwwfHx8fDE3NTY2NDc1NTR8MA&ixlib=rb-4.1.0&q=85"
-                alt="Financial Growth and Savings"
-                className="rounded-lg shadow-2xl w-full h-96 object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 rounded-lg"></div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20">
+              <div className="text-center mb-6">
+                <img 
+                  src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwxfHxmaW5hbmNpYWwlMjBncm93dGh8ZW58MHx8fHwxNzU2NjIwNjE5fDA&ixlib=rb-4.1.0&q=85"
+                  alt="Grow your money with Sarvam Finance"
+                  className="rounded-lg w-full h-48 object-cover mb-4"
+                />
+                <h3 className="text-2xl font-bold mb-4">Grow your money with Sarvam Finance</h3>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold mb-2">12%</div>
+                  <div className="text-red-200 text-sm">Max Returns</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold mb-2">₹1L+</div>
+                  <div className="text-red-200 text-sm">Gold Loans</div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-
-        {/* Trust Indicators */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div className="slide-up">
-            <div className="text-3xl font-bold mb-2">13+</div>
-            <div className="text-red-200">Years of Trust</div>
-          </div>
-          <div className="slide-up" style={{animationDelay: '0.1s'}}>
-            <div className="text-3xl font-bold mb-2">5000+</div>
-            <div className="text-red-200">Happy Customers</div>
-          </div>
-          <div className="slide-up" style={{animationDelay: '0.2s'}}>
-            <div className="text-3xl font-bold mb-2">₹50Cr+</div>
-            <div className="text-red-200">Loans Disbursed</div>
-          </div>
-          <div className="slide-up" style={{animationDelay: '0.3s'}}>
-            <div className="text-3xl font-bold mb-2">24/7</div>
-            <div className="text-red-200">Customer Support</div>
           </div>
         </div>
       </div>
