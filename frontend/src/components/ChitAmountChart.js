@@ -347,7 +347,7 @@ const ChitAmountChart = () => {
                     return (
                       <div key={index} className="flex flex-col items-center min-w-[40px]">
                         <div className="mb-2 text-xs text-gray-600 transform -rotate-45 origin-bottom-left">
-                          {formatCurrency(data.chitAmountCustomerGets)}
+                          ₹{formatCurrency(data.chitAmountCustomerGets)}
                         </div>
                         <div
                           className="bg-red-500 hover:bg-red-600 transition-colors duration-200 w-8 rounded-t cursor-pointer"
