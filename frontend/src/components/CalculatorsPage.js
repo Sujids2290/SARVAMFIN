@@ -151,7 +151,7 @@ const CalculatorsPage = () => {
               />
             </div>
             <p className="text-gray-400 mb-4">
-              © 2024 SARVAM FINANCE AND CHIT FUNDS LTD. All rights reserved.
+              © 2024 SARVAM FINANCE AND CHITFUNDS PVT LTD. All rights reserved.
             </p>
             <div className="text-red-400 font-semibold">
               Built on Trust for the past 13 years
