@@ -153,21 +153,23 @@ const Footer = () => {
                 <span className="text-red-400 mr-2">📞</span>
                 <div>
                   <div className="font-semibold">Phone</div>
-                  <div className="text-sm">+91 94428 75000</div>
+                  <div className="text-sm">04324-233844</div>
+                  <div className="text-sm">8940448844</div>
                 </div>
               </div>
               <div className="flex items-start">
                 <span className="text-red-400 mr-2">✉️</span>
                 <div>
                   <div className="font-semibold">Email</div>
-                  <div className="text-sm">info@sarvamfinance.com</div>
+                  <div className="text-sm">dhinesh@sarvamgroups.in</div>
+                  <div className="text-sm">info@sarvamgroups.in</div>
                 </div>
               </div>
               <div className="flex items-start">
                 <span className="text-red-400 mr-2">🕒</span>
                 <div>
-                  <div className="font-semibold">Hours</div>
-                  <div className="text-sm">Mon-Sat: 9AM-7PM</div>
+                  <div className="font-semibold">Business Hours</div>
+                  <div className="text-sm">Mon to Fri: 10AM - 7PM</div>
                 </div>
               </div>
             </div>
