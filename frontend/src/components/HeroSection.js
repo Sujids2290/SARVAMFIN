@@ -9,18 +9,28 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="home" className="relative bg-gradient-to-r from-red-600 to-red-800 text-white pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <section id="home" className="relative text-white pt-20">
+      {/* Background Image with Overlay */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwxfHxzYXZpbmdzJTIwbW9uZXklMjBncm93dGh8ZW58MHx8fHwxNzU2NjQ3NTQ5fDA&ixlib=rb-4.1.0&q=85')`
+        }}
+      ></div>
+      {/* Semi-transparent Red Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-red-600/90 to-red-800/90"></div>
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
           {/* Left Content */}
           <div className="fade-in">
             <h1 className="hero-title text-4xl md:text-6xl font-bold mb-6 text-shadow">
-              Your Trusted Financial Partner in Karur
+              Your Trusted Financial Partner
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-red-100 leading-relaxed">
-              Expert solutions for <span className="font-semibold text-white">Karur gold loans</span>, 
-              <span className="font-semibold text-white"> chit funds Karur</span>, and 
-              <span className="font-semibold text-white"> Karur deposits</span> - serving our community with integrity for over 13 years.
+              Expert solutions for <span className="font-semibold text-white">gold loans</span>, 
+              <span className="font-semibold text-white"> chit funds</span>, and 
+              <span className="font-semibold text-white"> deposits</span> - serving our community with integrity for over 13 years.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <button 
