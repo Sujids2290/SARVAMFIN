@@ -114,7 +114,7 @@ const Footer = () => {
                   to="/calculators"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Finance Calculators
+                  Calculators
                 </Link>
               </li>
               <li>
