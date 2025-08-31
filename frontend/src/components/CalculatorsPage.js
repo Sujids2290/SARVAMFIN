@@ -72,6 +72,16 @@ const CalculatorsPage = () => {
               >
                 Chit Fund Calculator
               </button>
+              <button
+                onClick={() => setActiveCalculator('chitchart')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  activeCalculator === 'chitchart'
+                    ? 'bg-red-600 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Chit Amount Chart
+              </button>
             </div>
           </div>
         </div>
@@ -80,6 +90,7 @@ const CalculatorsPage = () => {
         <div className="max-w-4xl mx-auto">
           {activeCalculator === 'emi' && <EMICalculator />}
           {activeCalculator === 'chitfund' && <ChitFundCalculator />}
+          {activeCalculator === 'chitchart' && <ChitAmountChart />}
         </div>
 
         {/* Additional Information */}
