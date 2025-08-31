@@ -169,7 +169,7 @@ const Footer = () => {
                 <span className="text-red-400 mr-2">🕒</span>
                 <div>
                   <div className="font-semibold">Business Hours</div>
-                  <div className="text-sm">Mon to Fri: 10AM - 7PM</div>
+                  <div className="text-sm">Mon to Sat: 10AM - 7PM</div>
                 </div>
               </div>
             </div>
