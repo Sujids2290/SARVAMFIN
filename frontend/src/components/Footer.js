@@ -184,7 +184,7 @@ const Footer = () => {
         <div className="mt-8 pt-8 border-t border-gray-700">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2024 SARVAM FINANCE AND CHIT FUNDS LTD. All rights reserved.
+              © 2024 SARVAM FINANCE AND CHITFUNDS PVT LTD. All rights reserved.
             </div>
             <div className="flex items-center space-x-4 text-gray-400 text-sm">
               <span>Built on Trust</span>
