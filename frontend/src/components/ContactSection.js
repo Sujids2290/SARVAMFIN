@@ -281,7 +281,7 @@ const ContactSection = () => {
             </div>
             <div className="mt-4 text-center">
               <p className="text-gray-600">
-                <strong>SARVAM FINANCE AND CHIT FUNDS LTD</strong><br />
+                <strong>SARVAM FINANCE AND CHITFUNDS PVT LTD</strong><br />
                 13, Chairman Ramanujam Street, Karur, Tamil Nadu
               </p>
             </div>
