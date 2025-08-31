@@ -19,9 +19,9 @@ const Header = () => {
           {/* Logo and Company Name */}
           <div className="flex items-center">
             <img 
-              src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/h3znmb1l_Sarvam%20Logo%20%282%29.pdf%20%28120%20x%2060%20px%29.png" 
+              src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/tpuz0zal_Sarvam%20Logo%20%282%29.pdf.png" 
               alt="Sarvam Finance Logo" 
-              className="h-10 w-auto mr-3"
+              className="h-12 w-auto mr-3"
             />
             <div>
               <h1 className="text-lg font-bold text-gray-900 leading-tight">SARVAM FINANCE</h1>
