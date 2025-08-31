@@ -1,0 +1,154 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import EMICalculator from './EMICalculator';
+import ChitFundCalculator from './ChitFundCalculator';
+
+const CalculatorsPage = () => {
+  const [activeCalculator, setActiveCalculator] = useState('emi');
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <Link to="/" className="flex items-center">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/h3znmb1l_Sarvam%20Logo%20%282%29.pdf%20%28120%20x%2060%20px%29.png" 
+                alt="Sarvam Finance Logo" 
+                className="h-12 w-auto"
+              />
+            </Link>
+            
+            <nav className="hidden md:flex space-x-6">
+              <Link to="/" className="text-gray-700 hover:text-red-600 font-medium transition-colors">
+                Home
+              </Link>
+              <span className="text-red-600 font-medium">Finance Calculators</span>
+            </nav>
+            
+            <Link to="/" className="btn-primary">
+              Back to Home
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Page Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Finance Calculators
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Plan your finances better with our professional calculators. Calculate EMIs, 
+            chit fund returns, and make informed financial decisions.
+          </p>
+        </div>
+
+        {/* Calculator Selection */}
+        <div className="flex justify-center mb-12">
+          <div className="bg-white rounded-lg p-2 shadow-md">
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setActiveCalculator('emi')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  activeCalculator === 'emi'
+                    ? 'bg-red-600 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                EMI Calculator
+              </button>
+              <button
+                onClick={() => setActiveCalculator('chitfund')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  activeCalculator === 'chitfund'
+                    ? 'bg-red-600 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Chit Fund Calculator
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Calculator Components */}
+        <div className="max-w-4xl mx-auto">
+          {activeCalculator === 'emi' && <EMICalculator />}
+          {activeCalculator === 'chitfund' && <ChitFundCalculator />}
+        </div>
+
+        {/* Additional Information */}
+        <div className="mt-16 bg-white rounded-xl shadow-md p-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Need Financial Guidance?
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Our expert team is here to help you make the best financial decisions. 
+              Contact us for personalized advice and solutions.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-white text-2xl">📞</span>
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Call Us</h3>
+              <p className="text-gray-600 text-sm">+91 94428 75000</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-white text-2xl">📍</span>
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Visit Us</h3>
+              <p className="text-gray-600 text-sm">13, Chairman Ramanujam Street, Karur</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-white text-2xl">✉️</span>
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Email Us</h3>
+              <p className="text-gray-600 text-sm">info@sarvamfinance.com</p>
+            </div>
+          </div>
+          
+          <div className="text-center mt-8">
+            <Link to="/" className="btn-primary">
+              Explore Our Services
+            </Link>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="flex items-center justify-center mb-4">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/h3znmb1l_Sarvam%20Logo%20%282%29.pdf%20%28120%20x%2060%20px%29.png" 
+                alt="Sarvam Finance Logo" 
+                className="h-8 w-auto brightness-0 invert"
+              />
+            </div>
+            <p className="text-gray-400 mb-4">
+              © 2024 SARVAM FINANCE AND CHIT FUNDS LTD. All rights reserved.
+            </p>
+            <div className="text-red-400 font-semibold">
+              Built on Trust for the past 13 years
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default CalculatorsPage;
