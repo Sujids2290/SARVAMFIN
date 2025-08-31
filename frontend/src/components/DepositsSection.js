@@ -4,10 +4,10 @@ const DepositsSection = () => {
   const depositTypes = [
     {
       title: "Fixed Deposits",
-      rate: "Up to 12% per annum",
+      rate: "Competitive Returns",
       description: "Secure your future with our high-yield fixed deposit schemes offering guaranteed returns.",
       features: [
-        "Competitive interest rates up to 12%",
+        "Competitive interest rates",
         "Flexible tenure options",
         "Premature withdrawal facility",
         "Auto-renewal options",
@@ -18,7 +18,7 @@ const DepositsSection = () => {
     },
     {
       title: "Recurring Deposits",
-      rate: "Up to 12% per annum",
+      rate: "Regular Savings",
       description: "Build your savings systematically with our recurring deposit plans designed for regular savers.",
       features: [
         "Monthly investment from ₹500",
@@ -32,7 +32,7 @@ const DepositsSection = () => {
     },
     {
       title: "Cumulative Deposits",
-      rate: "Up to 12% per annum",
+      rate: "Compounding Benefits",
       description: "Maximize your returns with our cumulative deposit schemes where interest compounds quarterly.",
       features: [
         "Quarterly compounding benefit",
