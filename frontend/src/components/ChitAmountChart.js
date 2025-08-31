@@ -70,10 +70,113 @@ const ChitAmountChart = () => {
     setResults(null);
   };
 
+  const downloadChart = () => {
+    if (!results) {
+      alert('Please generate chart first');
+      return;
+    }
+
+    // Create CSV content
+    let csvContent = "ROI (%),Auction Discount (₹),Commission (₹),Amount Customer Gets (₹)\n";
+    
+    results.chartData.forEach(data => {
+      csvContent += `${data.roi}%,${data.auctionDiscount.toFixed(0)},${data.commissionAmount.toFixed(0)},${data.chitAmountCustomerGets.toFixed(0)}\n`;
+    });
+
+    // Add summary information
+    csvContent += "\n\nChart Summary:\n";
+    csvContent += `Chit Amount,₹${results.chitAmount.toLocaleString('en-IN')}\n`;
+    csvContent += `Duration,${results.numberOfMonths} months\n`;
+    csvContent += `Commission Rate,${results.commissionRate}%\n`;
+    csvContent += `Auction Month,Month ${results.auctionMonth}\n`;
+
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Chit_Amount_Chart_${results.chitAmount}_${results.numberOfMonths}months.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const downloadPDF = () => {
+    if (!results) {
+      alert('Please generate chart first');
+      return;
+    }
+
+    // Create a printable version
+    const printWindow = window.open('', '_blank');
+    const chartHTML = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Chit Amount Chart - Sarvam Finance</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            .header { text-align: center; margin-bottom: 30px; }
+            .summary { background: #f5f5f5; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+            table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+            th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+            th { background-color: #dc2626; color: white; }
+            tr:nth-child(even) { background-color: #f9f9f9; }
+            .chart-container { margin: 20px 0; }
+            .bar { display: inline-block; background: #dc2626; margin: 2px; text-align: center; color: white; }
+            @media print { .no-print { display: none; } }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>Chit Amount Chart Analysis</h1>
+            <h2>SARVAM FINANCE AND CHITFUNDS PVT LTD</h2>
+          </div>
+          
+          <div class="summary">
+            <h3>Chart Summary</h3>
+            <p><strong>Chit Amount:</strong> ₹${results.chitAmount.toLocaleString('en-IN')}</p>
+            <p><strong>Duration:</strong> ${results.numberOfMonths} months</p>
+            <p><strong>Commission Rate:</strong> ${results.commissionRate}%</p>
+            <p><strong>Auction Month:</strong> Month ${results.auctionMonth}</p>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>ROI %</th>
+                <th>Auction Discount</th>
+                <th>Commission (${results.commissionRate}%)</th>
+                <th>Amount Customer Gets</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${results.chartData.map(data => `
+                <tr>
+                  <td>${data.roi}%</td>
+                  <td>₹${formatCurrency(data.auctionDiscount)}</td>
+                  <td>₹${formatCurrency(data.commissionAmount)}</td>
+                  <td><strong>₹${formatCurrency(data.chitAmountCustomerGets)}</strong></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="no-print">
+            <button onclick="window.print()">Print / Save as PDF</button>
+            <button onclick="window.close()">Close</button>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    printWindow.document.write(chartHTML);
+    printWindow.document.close();
+  };
+
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
       maximumFractionDigits: 0
     }).format(amount);
   };
