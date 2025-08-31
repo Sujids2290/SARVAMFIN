@@ -285,6 +285,26 @@ const ChitAmountChart = () => {
               Reset
             </button>
           </div>
+
+          {/* Download Buttons */}
+          {results && (
+            <div className="mt-4 flex space-x-4">
+              <button
+                onClick={downloadChart}
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex-1 flex items-center justify-center"
+              >
+                <span className="mr-2">📥</span>
+                Download CSV
+              </button>
+              <button
+                onClick={downloadPDF}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex-1 flex items-center justify-center"
+              >
+                <span className="mr-2">📄</span>
+                Print/PDF
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Results Section */}
