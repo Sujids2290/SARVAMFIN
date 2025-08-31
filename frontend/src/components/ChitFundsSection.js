@@ -159,8 +159,8 @@ const ChitFundsSection = () => {
 
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1612178991541-b48cc8e92a4d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHw0fHxmaW5hbmNpYWwlMjBzZXJ2aWNlc3xlbnwwfHx8fDE3NTY2NDUwNDF8MA&ixlib=rb-4.1.0&q=85"
-                alt="Digital Financial Services"
+                src="https://images.unsplash.com/photo-1751273907436-7057a403a818?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwxfHxzYXZpbmdzJTIwaW5kaWFuJTIwcnVwZWV8ZW58MHx8fHwxNzU2NjUwODI5fDA&ixlib=rb-4.1.0&q=85"
+                alt="Indian Rupee Savings and Chit Funds"
                 className="rounded-lg w-full h-80 object-cover"
               />
             </div>
