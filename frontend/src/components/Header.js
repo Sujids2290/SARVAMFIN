@@ -16,13 +16,16 @@ const Header = () => {
     <header className="bg-white shadow-md fixed w-full top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          {/* Logo */}
+          {/* Logo and Company Name */}
           <div className="flex items-center">
             <img 
               src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/h3znmb1l_Sarvam%20Logo%20%282%29.pdf%20%28120%20x%2060%20px%29.png" 
               alt="Sarvam Finance Logo" 
-              className="h-12 w-auto"
+              className="h-12 w-auto mr-3"
             />
+            <div className="hidden md:block">
+              <h1 className="text-xl font-bold text-gray-900">SARVAM FINANCE AND CHITFUNDS PVT LTD</h1>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
