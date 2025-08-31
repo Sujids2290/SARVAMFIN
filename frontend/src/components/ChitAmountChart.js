@@ -407,13 +407,13 @@ const ChitAmountChart = () => {
                       {data.roi}%
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600">
-                      {formatCurrency(data.auctionDiscount)}
+                      ₹{formatCurrency(data.auctionDiscount)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600">
-                      {formatCurrency(data.commissionAmount)}
+                      ₹{formatCurrency(data.commissionAmount)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600">
-                      {formatCurrency(data.chitAmountCustomerGets)}
+                      ₹{formatCurrency(data.chitAmountCustomerGets)}
                     </td>
                   </tr>
                 ))}
