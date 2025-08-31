@@ -52,8 +52,8 @@ const HeroSection = () => {
           <div className="mt-12 lg:mt-0 slide-up">
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwyfHxmaW5hbmNpYWwlMjBzZXJ2aWNlc3xlbnwwfHx8fDE3NTY2NDUwNDF8MA&ixlib=rb-4.1.0&q=85"
-                alt="Financial Services in Karur"
+                src="https://images.unsplash.com/photo-1543286386-2e659306cd6c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxmaW5hbmNpYWwlMjBwcm9ncmVzc3xlbnwwfHx8fDE3NTY2NDc1NTR8MA&ixlib=rb-4.1.0&q=85"
+                alt="Financial Growth and Savings"
                 className="rounded-lg shadow-2xl w-full h-96 object-cover"
               />
               <div className="absolute inset-0 bg-black bg-opacity-20 rounded-lg"></div>
