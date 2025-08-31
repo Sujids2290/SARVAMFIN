@@ -136,6 +136,13 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-4">Contact Info</h3>
             <div className="space-y-3 text-gray-300">
               <div className="flex items-start">
+                <span className="text-red-400 mr-2">🏢</span>
+                <div>
+                  <div className="font-semibold">SARVAM FINANCE AND CHITFUNDS PVT LTD</div>
+                  <div className="text-sm">Your trusted financial partner in Karur</div>
+                </div>
+              </div>
+              <div className="flex items-start">
                 <span className="text-red-400 mr-2">📍</span>
                 <div>
                   <div className="font-semibold">Address</div>
