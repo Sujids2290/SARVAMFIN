@@ -120,6 +120,13 @@ const Header = () => {
               >
                 Chit Funds
               </button>
+              <Link 
+                to="/calculators"
+                className="text-gray-700 hover:text-red-600 font-medium py-2 px-4 text-left"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Calculators
+              </Link>
               <button 
                 onClick={() => scrollToSection('ceo')}
                 className="text-gray-700 hover:text-red-600 font-medium py-2 px-4 text-left"
