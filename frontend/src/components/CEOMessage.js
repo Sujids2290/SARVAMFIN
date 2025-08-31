@@ -46,8 +46,8 @@ const CEOMessage = () => {
                   
                   <p className="text-lg text-gray-700 mb-6 leading-relaxed">
                     Our story began with a young entrepreneur who believed that financial services should be 
-                    accessible, affordable, and trustworthy. Starting with just ₹50,000 and a dream, we've grown 
-                    to serve over 5,000 families across Karur, disbursing loans worth ₹50+ crores while maintaining 
+                    accessible, affordable, and trustworthy. Starting with just ₹50,000 and a dream, 
+                    we've grown to serve over 5,000 families across Karur while maintaining 
                     our core values of trust and transparency.
                   </p>
                   
