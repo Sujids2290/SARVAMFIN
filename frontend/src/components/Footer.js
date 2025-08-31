@@ -19,7 +19,7 @@ const Footer = () => {
               <img 
                 src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/h3znmb1l_Sarvam%20Logo%20%282%29.pdf%20%28120%20x%2060%20px%29.png" 
                 alt="Sarvam Finance Logo" 
-                className="h-10 w-auto brightness-0 invert"
+                className="h-12 w-auto brightness-0 invert"
               />
             </div>
             <p className="text-gray-300 mb-4">
