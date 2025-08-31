@@ -140,8 +140,8 @@ const DepositsSection = () => {
             
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1638481826540-7710b13f7d53?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwxfHxmaW5hbmNpYWwlMjBzZXJ2aWNlc3xlbnwwfHx8fDE3NTY2NDUwNDF8MA&ixlib=rb-4.1.0&q=85"
-                alt="Financial Analytics and Growth"
+                src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwxfHxtb25leSUyMGdyb3d0aHxlbnwwfHx8fDE3NTY2NTA4MzV8MA&ixlib=rb-4.1.0&q=85"
+                alt="Savings Growth and Deposits"
                 className="rounded-lg w-full h-80 object-cover"
               />
             </div>
