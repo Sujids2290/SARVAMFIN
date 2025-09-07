@@ -67,7 +67,7 @@ const CEOMessage = () => {
                   <div className="flex items-center">
                     <div className="flex-1">
                       <div className="text-2xl font-bold text-red-600 mb-2">Built on Trust for the past 13 years</div>
-                      <div className="text-gray-600">- Our commitment to Karur community</div>
+                      <div className="text-gray-600">- Our Commitment to YOU</div>
                     </div>
                   </div>
                 </div>
