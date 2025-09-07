@@ -153,7 +153,7 @@ const LoansSection = () => {
             <div>
               <h4 className="font-bold text-gray-900 mb-3">Our Commitment:</h4>
               <ul className="space-y-2 text-gray-700">
-                <li>• Fastest loan approval in Karur</li>
+                <li>• Fastest loan approval process</li>
                 <li>• Competitive interest rates starting from 12%</li>
                 <li>• Transparent fee structure</li>
                 <li>• Doorstep service available</li>
