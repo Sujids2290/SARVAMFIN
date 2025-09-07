@@ -99,12 +99,12 @@ const LoansSection = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                  onClick={scrollToCalculators}
-                  className="btn-primary"
+                <Link 
+                  to="/calculators"
+                  className="btn-primary text-center"
                 >
                   Calculate EMI
-                </button>
+                </Link>
                 <button 
                   onClick={() => {
                     const element = document.getElementById('contact');
