@@ -111,7 +111,8 @@ const CalculatorsPage = () => {
                 <span className="text-white text-2xl">📞</span>
               </div>
               <h3 className="font-bold text-gray-900 mb-2">Call Us</h3>
-              <p className="text-gray-600 text-sm">+91 94428 75000</p>
+              <p className="text-gray-600 text-sm">04324-233844</p>
+              <p className="text-gray-600 text-sm">8940448844</p>
             </div>
             
             <div className="text-center">
