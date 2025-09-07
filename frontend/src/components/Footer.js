@@ -15,11 +15,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-1">
-            <div className="flex items-center mb-6">
+            <div className="flex items-center mb-8">
               <img 
                 src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/bd15rkvw_sarvam%20%281%29.png" 
                 alt="Sarvam Finance Logo" 
-                className="h-28 w-auto"
+                className="h-56 w-auto"
               />
             </div>
             <p className="text-gray-300 mb-4">
