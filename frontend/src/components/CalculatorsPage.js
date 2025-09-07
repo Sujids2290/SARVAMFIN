@@ -12,6 +12,18 @@ const CalculatorsPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Function to handle calculator switching with scroll to top
+  const handleCalculatorSwitch = (calculatorType) => {
+    setActiveCalculator(calculatorType);
+    // Scroll to calculators section smoothly
+    setTimeout(() => {
+      const calculatorSection = document.querySelector('.max-w-4xl');
+      if (calculatorSection) {
+        calculatorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
