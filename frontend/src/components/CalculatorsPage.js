@@ -70,7 +70,7 @@ const CalculatorsPage = () => {
           <div className="bg-white rounded-lg p-2 shadow-md">
             <div className="flex space-x-2">
               <button
-                onClick={() => setActiveCalculator('emi')}
+                onClick={() => handleCalculatorSwitch('emi')}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                   activeCalculator === 'emi'
                     ? 'bg-red-600 text-white shadow-md'
@@ -80,7 +80,7 @@ const CalculatorsPage = () => {
                 EMI Calculator
               </button>
               <button
-                onClick={() => setActiveCalculator('chitfund')}
+                onClick={() => handleCalculatorSwitch('chitfund')}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                   activeCalculator === 'chitfund'
                     ? 'bg-red-600 text-white shadow-md'
@@ -90,7 +90,7 @@ const CalculatorsPage = () => {
                 Chit Fund Calculator
               </button>
               <button
-                onClick={() => setActiveCalculator('chitchart')}
+                onClick={() => handleCalculatorSwitch('chitchart')}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                   activeCalculator === 'chitchart'
                     ? 'bg-red-600 text-white shadow-md'
