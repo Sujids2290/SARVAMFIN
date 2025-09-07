@@ -20,7 +20,7 @@ const HeroSection = () => {
               With Trust
             </h1>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Your trusted partner for <span className="font-semibold text-gray-900">Karur gold loans</span>, 
+              Your trusted partner for <span className="font-semibold text-gray-900">gold loans</span>, 
               <span className="font-semibold text-gray-900"> chit funds</span>, and 
               <span className="font-semibold text-gray-900"> deposits</span>. Experience reliable financial services with competitive rates and personalized solutions.
             </p>
