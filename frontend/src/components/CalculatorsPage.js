@@ -128,7 +128,8 @@ const CalculatorsPage = () => {
                 <span className="text-white text-2xl">✉️</span>
               </div>
               <h3 className="font-bold text-gray-900 mb-2">Email Us</h3>
-              <p className="text-gray-600 text-sm">info@sarvamfinance.com</p>
+              <p className="text-gray-600 text-sm">dhinesh@sarvamgroups.in</p>
+              <p className="text-gray-600 text-sm">info@sarvamgroups.in</p>
             </div>
           </div>
           
