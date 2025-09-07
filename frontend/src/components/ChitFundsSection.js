@@ -110,7 +110,7 @@ const ChitFundsSection = () => {
             Chit Funds
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Join our trusted <strong>chit funds Karur</strong> community and benefit from 
+            Join our trusted <strong>chit funds</strong> community and benefit from 
             traditional investment methods with modern transparency and security.
           </p>
         </div>
