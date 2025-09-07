@@ -17,9 +17,9 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <div className="flex items-center mb-4">
               <img 
-                src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/yjegkl0k_sarvam.png" 
+                src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/bd15rkvw_sarvam%20%281%29.png" 
                 alt="Sarvam Finance Logo" 
-                className="h-16 w-auto"
+                className="h-20 w-auto"
               />
             </div>
             <p className="text-gray-300 mb-4">
