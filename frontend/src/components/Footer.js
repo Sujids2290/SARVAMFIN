@@ -180,8 +180,8 @@ const Footer = () => {
         <div className="mt-8 pt-8 border-t border-gray-700">
           <div className="text-center text-gray-400 text-sm">
             <p className="mb-2">
-              <strong>Karur's Trusted Financial Services:</strong> Karur gold loan | Chit funds Karur | Karur deposits | 
-              Financial services Karur | Gold loans Karur | Personal loans Karur | Business loans Karur
+              <strong>Trusted Financial Services:</strong> Gold loan | Chit funds | Deposits | 
+              Financial services | Personal loans | Business loans
             </p>
             <p>
               Serving Karur, Tiruchirappalli, Salem, Namakkal, and surrounding areas with comprehensive financial solutions
