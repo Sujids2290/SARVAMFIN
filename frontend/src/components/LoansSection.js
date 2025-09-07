@@ -141,8 +141,8 @@ const LoansSection = () => {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <p className="text-gray-700 mb-4">
-                At Sarvam Finance, we understand the unique financial needs of Karur residents and businesses. 
-                Our <strong>Karur gold loan</strong> services offer the fastest approval process with competitive rates, 
+                At Sarvam Finance, we understand the unique financial needs of our customers and businesses. 
+                Our <strong>gold loan</strong> services offer the fastest approval process with competitive rates, 
                 making us the preferred choice for immediate financial assistance.
               </p>
               <p className="text-gray-700">
