@@ -55,7 +55,7 @@ const DepositsSection = () => {
             Deposit Schemes
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Grow your wealth with our attractive <strong>Karur deposits</strong> offering 
+            Grow your wealth with our attractive <strong>deposits</strong> offering 
             competitive returns up to 12% per annum with complete security and flexibility.
           </p>
         </div>
