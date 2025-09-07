@@ -140,12 +140,12 @@ const ChitFundsSection = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                  onClick={() => window.open('/calculators', '_blank')}
-                  className="btn-primary"
+                <Link 
+                  to="/calculators"
+                  className="btn-primary text-center"
                 >
                   Chit Fund Calculator
-                </button>
+                </Link>
                 <button 
                   onClick={() => {
                     const element = document.getElementById('contact');
