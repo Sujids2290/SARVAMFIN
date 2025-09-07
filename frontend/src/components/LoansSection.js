@@ -49,7 +49,7 @@ const LoansSection = () => {
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Comprehensive loan services tailored to meet your financial needs. 
-            From quick <strong>Karur gold loans</strong> to long-term mortgage solutions.
+            From quick <strong>gold loans</strong> to long-term mortgage solutions.
           </p>
         </div>
 
