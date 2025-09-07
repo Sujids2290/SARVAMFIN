@@ -167,12 +167,6 @@ const DepositsSection = () => {
             >
               Open Deposit Account
             </button>
-            <button 
-              onClick={() => window.open('/calculators', '_blank')}
-              className="btn-secondary"
-            >
-              Calculate Returns
-            </button>
           </div>
         </div>
       </div>
