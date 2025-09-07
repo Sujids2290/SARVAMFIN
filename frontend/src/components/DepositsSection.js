@@ -103,7 +103,7 @@ const DepositsSection = () => {
           <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
             <div>
               <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                Why Choose Our Karur Deposits?
+                Why Choose Our Deposits?
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center">
