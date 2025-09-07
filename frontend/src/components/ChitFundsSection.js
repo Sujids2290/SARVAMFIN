@@ -226,12 +226,12 @@ const ChitFundsSection = () => {
         {/* SEO Content */}
         <div className="mt-12 bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-8">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            Trusted Chit Funds in Karur - 13 Years of Excellence
+            Trusted Chit Funds - 13 Years of Excellence
           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <p className="text-gray-700 mb-4">
-                Sarvam Finance has been serving the Karur community with reliable <strong>chit funds Karur</strong> 
+                Sarvam Finance has been serving our community with reliable <strong>chit funds</strong> 
                 services for over 13 years. Our transparent operations and customer-first approach have made us 
                 the most trusted name in traditional investment schemes.
               </p>
