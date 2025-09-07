@@ -162,11 +162,11 @@ const CalculatorsPage = () => {
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center justify-center mb-6">
               <img 
                 src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/bd15rkvw_sarvam%20%281%29.png" 
                 alt="Sarvam Finance Logo" 
-                className="h-16 w-auto"
+                className="h-24 w-auto"
               />
             </div>
             <p className="text-gray-400 mb-4">
