@@ -25,7 +25,7 @@ const Header = () => {
             />
             <div>
               <h1 className="text-lg font-bold text-gray-900 leading-tight">SARVAM FINANCE</h1>
-              <p className="text-xs text-gray-600 leading-tight">& CHIT FUNDS LTD</p>
+              <p className="text-xs text-gray-600 leading-tight">& CHIT FUNDS PVT LTD</p>
             </div>
           </div>
 
