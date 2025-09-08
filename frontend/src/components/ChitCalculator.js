@@ -339,7 +339,7 @@ const ChitCalculator = () => {
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                Calculate Bid Amount
+                Find Bid Amount
               </button>
               <button
                 onClick={() => handleModeChange('bidInterest')}
@@ -349,7 +349,7 @@ const ChitCalculator = () => {
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                Calculate Bid Interest
+                Find Bidding Rate
               </button>
             </div>
           </div>
@@ -373,7 +373,7 @@ const ChitCalculator = () => {
                   step="0.1"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Enter the annual interest rate to calculate the bid amount
+                  Enter the annual interest rate → System will calculate the bid amount
                 </p>
               </div>
             ) : (
@@ -392,7 +392,7 @@ const ChitCalculator = () => {
                   min="0"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Bid amount and commission is deducted from Chit Amount to get the amount payable to the auction winner
+                  Enter the bid amount → System will calculate the bidding rate
                 </p>
               </div>
             )}
