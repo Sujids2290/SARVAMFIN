@@ -81,7 +81,7 @@ const ChitFundsSection = () => {
                   onClick={() => setShowCalculator(!showCalculator)}
                   className="btn-primary text-center"
                 >
-                  {showCalculator ? 'Hide Calculator' : 'Try Calculator Here'}
+                  {showCalculator ? 'Hide Calculator' : 'Try CHIT Calculator'}
                 </button>
                 <Link 
                   to="/calculators"
