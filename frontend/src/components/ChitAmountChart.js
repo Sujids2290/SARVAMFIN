@@ -51,23 +51,30 @@ const ChitAmountChart = () => {
   const calculateAuctionAmount = (chitAmount, months, commissionPct, auctionMonth, auctionPct) => {
     // Define variables
     const I = chitAmount / months; // monthly installment
-    const r = Math.pow(1 + (auctionPct / 100), 1/12) - 1; // monthly ROI rate
+    const annualRate = auctionPct / 100; // annual rate as decimal
+    const r = Math.pow(1 + annualRate, 1/12) - 1; // monthly ROI rate
     const k = auctionMonth;
     const n = months;
     
-    // Calculate summations using the exact formula
-    let S_before = 0;
+    // NPV = 0 approach: sum of all cash flows at month k should equal zero
+    // Past installments (months 1 to k-1): grown forward to month k
+    let npvPast = 0;
     for (let j = 1; j <= k - 1; j++) {
-      S_before += Math.pow(1 + r, k - j); // Growth from month j to month k
+      const periodsToGrow = k - j;
+      npvPast += I * Math.pow(1 + r, periodsToGrow);
     }
     
-    let S_after = 0;
+    // Current month k: receive P, pay I
+    // Future installments (months k+1 to n): discounted back to month k  
+    let npvFuture = 0;
     for (let j = k + 1; j <= n; j++) {
-      S_after += Math.pow(1 + r, k - j); // Discount from month j to month k
+      const periodsToDiscount = j - k;
+      npvFuture += I * Math.pow(1 + r, -periodsToDiscount);
     }
     
-    // Auction Amount at month k using the cash flow approach
-    let P = I * (S_before + 1 + S_after);
+    // At month k: NPV = -npvPast + P - I - npvFuture = 0
+    // Therefore: P = npvPast + I + npvFuture
+    let P = npvPast + I + npvFuture;
     
     // Apply cap and guards
     const commission = chitAmount * commissionPct / 100;
