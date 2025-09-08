@@ -379,15 +379,15 @@ const ChitCalculator = () => {
             <div className="space-y-3">
               <div>
                 <div className="text-sm text-red-600">Bidding Rate</div>
-                <div className="text-2xl font-bold text-red-800">{results.biddingRate.toFixed(2)}%</div>
+                <div className="text-2xl font-bold text-red-800">{results.biddingRate ? results.biddingRate.toFixed(2) : '0.00'}%</div>
               </div>
               <div>
                 <div className="text-sm text-red-600">Bidder Gets</div>
-                <div className="text-xl font-bold text-red-800">{formatCurrency(results.bidderGet)}</div>
+                <div className="text-xl font-bold text-red-800">{formatCurrency(results.bidderGet || 0)}</div>
               </div>
               <div>
                 <div className="text-sm text-red-600">Bid Amount</div>
-                <div className="text-lg font-semibold text-red-700">{formatCurrency(results.bidAmount)}</div>
+                <div className="text-lg font-semibold text-red-700">{formatCurrency(results.bidAmount || 0)}</div>
               </div>
             </div>
           </div>
