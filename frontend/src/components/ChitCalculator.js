@@ -125,15 +125,15 @@ const ChitCalculator = () => {
       { 'Parameter': 'Total Months', 'Value': inputs.totalMonths },
       { 'Parameter': 'Current Month', 'Value': inputs.currentMonth },
       { 'Parameter': '', 'Value': '' },
-      { 'Parameter': 'Bidding Rate', 'Value': `${results.biddingRate.toFixed(2)}%` },
-      { 'Parameter': 'Bid Amount', 'Value': `₹${Math.round(results.bidAmount).toLocaleString('en-IN')}` },
-      { 'Parameter': 'Bidder Gets', 'Value': `₹${Math.round(results.bidderGet).toLocaleString('en-IN')}` },
+      { 'Parameter': 'Bidding Rate', 'Value': `${results.biddingRate ? results.biddingRate.toFixed(2) : '0.00'}%` },
+      { 'Parameter': 'Bid Amount', 'Value': `₹${Math.round(results.bidAmount || 0).toLocaleString('en-IN')}` },
+      { 'Parameter': 'Bidder Gets', 'Value': `₹${Math.round(results.bidderGet || 0).toLocaleString('en-IN')}` },
       { 'Parameter': '', 'Value': '' },
-      { 'Parameter': 'Original Installment', 'Value': `₹${Math.round(results.originalInstallment).toLocaleString('en-IN')}` },
-      { 'Parameter': 'Dividend per Person', 'Value': `₹${Math.round(results.dividendPerPerson).toLocaleString('en-IN')}` },
-      { 'Parameter': 'Payable Installment', 'Value': `₹${Math.round(results.payableInstallment).toLocaleString('en-IN')}` },
-      { 'Parameter': 'Monthly Savings', 'Value': `${results.monthlySavings.toFixed(2)}%` },
-      { 'Parameter': 'Chit Commission', 'Value': `₹${Math.round(results.chitCommission).toLocaleString('en-IN')}` }
+      { 'Parameter': 'Original Installment', 'Value': `₹${Math.round(results.originalInstallment || 0).toLocaleString('en-IN')}` },
+      { 'Parameter': 'Dividend per Person', 'Value': `₹${Math.round(results.dividendPerPerson || 0).toLocaleString('en-IN')}` },
+      { 'Parameter': 'Payable Installment', 'Value': `₹${Math.round(results.payableInstallment || 0).toLocaleString('en-IN')}` },
+      { 'Parameter': 'Monthly Savings', 'Value': `${results.monthlySavings ? results.monthlySavings.toFixed(2) : '0.00'}%` },
+      { 'Parameter': 'Chit Commission', 'Value': `₹${Math.round(results.chitCommission || 0).toLocaleString('en-IN')}` }
     ];
 
     // Create workbook
@@ -142,7 +142,7 @@ const ChitCalculator = () => {
     XLSX.utils.book_append_sheet(wb, ws, "Chit Fund Results");
 
     // Download file
-    XLSX.writeFile(wb, `Chit_Fund_Calculator_${inputs.chitAmount}.xlsx`);
+    XLSX.writeFile(wb, `Chit_Fund_Calculator_₹${inputs.chitAmount}.xlsx`);
   };
 
   const downloadPDF = () => {
