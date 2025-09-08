@@ -77,11 +77,17 @@ const ChitFundsSection = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  to="/calculators"
+                <button 
+                  onClick={() => setShowCalculator(!showCalculator)}
                   className="btn-primary text-center"
                 >
-                  Chit Amount Chart
+                  {showCalculator ? 'Hide Calculator' : 'Try Calculator Here'}
+                </button>
+                <Link 
+                  to="/calculators"
+                  className="btn-secondary text-center"
+                >
+                  View All Calculators
                 </Link>
                 <button 
                   onClick={() => {
