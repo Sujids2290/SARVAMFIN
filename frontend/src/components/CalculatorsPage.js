@@ -170,7 +170,7 @@ const CalculatorsPage = () => {
               <img 
                 src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/bd15rkvw_sarvam%20%281%29.png" 
                 alt="Sarvam Finance Logo" 
-                className="h-48 w-auto"
+                className="h-32 w-auto"
               />
             </div>
             <p className="text-gray-400 mb-4">
