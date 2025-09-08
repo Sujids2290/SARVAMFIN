@@ -79,7 +79,7 @@ const ChitFundsSection = () => {
                   to="/calculators"
                   className="btn-primary text-center"
                 >
-                  EMI Calculator
+                  Finance Calculators
                 </Link>
                 <button 
                   onClick={() => {
