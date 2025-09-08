@@ -421,7 +421,7 @@ const ChitCalculator = () => {
             <div className="space-y-3">
               <div>
                 <div className="text-sm text-blue-600">Chit Commission</div>
-                <div className="text-2xl font-bold text-blue-800">{formatCurrency(results.chitCommission)}</div>
+                <div className="text-2xl font-bold text-blue-800">{formatCurrency(results.chitCommission || 0)}</div>
               </div>
             </div>
           </div>
