@@ -63,14 +63,43 @@ const CalculatorsPage = () => {
             Finance Calculators
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Plan your finances better with our professional EMI calculator. 
-            Calculate loan payments and make informed financial decisions.
+            Plan your finances better with our professional calculators. Calculate EMIs, 
+            chit fund returns, and make informed financial decisions.
           </p>
         </div>
 
-        {/* EMI Calculator */}
+        {/* Calculator Selection */}
+        <div className="flex justify-center mb-12">
+          <div className="bg-white rounded-lg p-2 shadow-md">
+            <div className="flex space-x-2">
+              <button
+                onClick={() => handleCalculatorSwitch('emi')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  activeCalculator === 'emi'
+                    ? 'bg-red-600 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                EMI Calculator
+              </button>
+              <button
+                onClick={() => handleCalculatorSwitch('chit')}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  activeCalculator === 'chit'
+                    ? 'bg-red-600 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Chit Calculator
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Calculator Components */}
         <div className="max-w-4xl mx-auto">
-          <EMICalculator />
+          {activeCalculator === 'emi' && <EMICalculator />}
+          {activeCalculator === 'chit' && <ChitCalculator />}
         </div>
 
         {/* Additional Information */}
