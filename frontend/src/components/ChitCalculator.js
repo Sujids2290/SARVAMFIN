@@ -166,7 +166,7 @@ const ChitCalculator = () => {
     // Add input summary
     doc.setFontSize(10);
     doc.setTextColor(60);
-    doc.text(`Chit Amount: ₹${parseFloat(inputs.chitAmount).toLocaleString('en-IN')}`, 20, 50);
+    doc.text(`Chit Amount: Rs. ${parseFloat(inputs.chitAmount).toLocaleString('en-IN')}`, 20, 50);
     doc.text(`Commission: ${inputs.commission}%`, 20, 58);
     doc.text(`Total Months: ${inputs.totalMonths}`, 20, 66);
     doc.text(`Current Month: ${inputs.currentMonth}`, 20, 74);
@@ -179,13 +179,13 @@ const ChitCalculator = () => {
     doc.setFontSize(10);
     doc.setTextColor(60);
     doc.text(`Bidding Rate: ${results.biddingRate ? results.biddingRate.toFixed(2) : '0.00'}%`, 20, 105);
-    doc.text(`Bid Amount: ₹${Math.round(results.bidAmount || 0).toLocaleString('en-IN')}`, 20, 113);
-    doc.text(`Bidder Gets: ₹${Math.round(results.bidderGet || 0).toLocaleString('en-IN')}`, 20, 121);
-    doc.text(`Original Installment: ₹${Math.round(results.originalInstallment || 0).toLocaleString('en-IN')}`, 20, 135);
-    doc.text(`Dividend per Person: ₹${Math.round(results.dividendPerPerson || 0).toLocaleString('en-IN')}`, 20, 143);
-    doc.text(`Payable Installment: ₹${Math.round(results.payableInstallment || 0).toLocaleString('en-IN')}`, 20, 151);
+    doc.text(`Bid Amount: Rs. ${Math.round(results.bidAmount || 0).toLocaleString('en-IN')}`, 20, 113);
+    doc.text(`Bidder Gets: Rs. ${Math.round(results.bidderGet || 0).toLocaleString('en-IN')}`, 20, 121);
+    doc.text(`Original Installment: Rs. ${Math.round(results.originalInstallment || 0).toLocaleString('en-IN')}`, 20, 135);
+    doc.text(`Dividend per Person: Rs. ${Math.round(results.dividendPerPerson || 0).toLocaleString('en-IN')}`, 20, 143);
+    doc.text(`Payable Installment: Rs. ${Math.round(results.payableInstallment || 0).toLocaleString('en-IN')}`, 20, 151);
     doc.text(`Monthly Savings: ${results.monthlySavings ? results.monthlySavings.toFixed(2) : '0.00'}%`, 20, 159);
-    doc.text(`Chit Commission: ₹${Math.round(results.chitCommission || 0).toLocaleString('en-IN')}`, 20, 167);
+    doc.text(`Chit Commission: Rs. ${Math.round(results.chitCommission || 0).toLocaleString('en-IN')}`, 20, 167);
     
     // Save the PDF
     doc.save(`Chit_Fund_Calculator_${inputs.chitAmount}.pdf`);
