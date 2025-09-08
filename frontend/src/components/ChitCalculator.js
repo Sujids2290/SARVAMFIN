@@ -488,35 +488,6 @@ const ChitCalculator = () => {
           </button>
         </div>
       )}
-
-      {/* Formulas Information */}
-      <div className="mt-12 bg-gray-50 rounded-lg p-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Formulas Used</h3>
-        <div className="text-sm text-gray-700 space-y-3">
-          <div>
-            <p><strong>Bidding Rate (annualized):</strong></p>
-            <p className="font-mono text-xs bg-white p-2 rounded border mt-1">
-              ((Bid Amount + Commission) × 12 × 100) ÷ ((Chit Amount – Bid Amount – Commission) × (Total Months – Current Month))
-            </p>
-          </div>
-          <div>
-            <p><strong>Bid Amount:</strong></p>
-            <p className="font-mono text-xs bg-white p-2 rounded border mt-1">
-              (rate × Chit Amount × (Total Months – Current Month)) ÷ (12 × 100 + rate × (Total Months – Current Month))
-            </p>
-          </div>
-          <div>
-            <p><strong>Other Calculations:</strong></p>
-            <ul className="list-disc list-inside space-y-1 mt-2">
-              <li>Original installment = Chit Amount ÷ Total Months</li>
-              <li>Commission = Commission % × Chit Amount</li>
-              <li>Dividend per person = Bid Amount ÷ Total Members</li>
-              <li>Payable Installment = Original Installment – Dividend per person</li>
-              <li>Monthly Savings = (Dividend per person ÷ Original Installment) × 100%</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
