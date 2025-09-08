@@ -103,6 +103,7 @@ const ChitAmountChart = () => {
     const excelData = results.chartData.map(data => ({
       'Auction %': `${data.auctionPercentage}%`,
       'Auction Amount (₹)': data.auctionAmount.toFixed(0),
+      'Auction Commission (₹)': data.commissionAmount.toFixed(0),
       'Per Person Payable (₹)': data.perPersonPayable.toFixed(0)
     }));
 
