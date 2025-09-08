@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import EMICalculator from './EMICalculator';
-import ChitAmountChart from './ChitAmountChart';
 
 const CalculatorsPage = () => {
   const [activeCalculator, setActiveCalculator] = useState('emi');
