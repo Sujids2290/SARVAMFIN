@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 
 const ChitAmountChart = () => {
   const [inputs, setInputs] = useState({
     chitAmount: '',
-    numberOfMonths: '',
-    commissionRate: '3',
+    months: '',
+    commissionPct: '3',
     auctionMonth: '',
-    totalMembers: ''
+    members: ''
   });
   
   const [results, setResults] = useState(null);
+  const [headerStats, setHeaderStats] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,68 +21,119 @@ const ChitAmountChart = () => {
     }));
   };
 
-  const calculateChitChart = () => {
-    const { chitAmount, numberOfMonths, commissionRate, auctionMonth, totalMembers } = inputs;
+  // Calculate header stats whenever inputs change
+  useEffect(() => {
+    const { chitAmount, months, commissionPct } = inputs;
     
-    if (!chitAmount || !numberOfMonths || !auctionMonth || !totalMembers) {
+    if (chitAmount && months && commissionPct) {
+      const chit = parseFloat(chitAmount);
+      const monthsNum = parseInt(months);
+      const commission = parseFloat(commissionPct);
+      
+      if (chit > 0 && monthsNum >= 2 && commission >= 0) {
+        const perInstallment = chit / monthsNum;
+        const commissionAmount = chit * commission / 100;
+        const maxPayableToWinner = chit - commissionAmount;
+        
+        setHeaderStats({
+          perInstallment,
+          commissionAmount,
+          maxPayableToWinner
+        });
+      } else {
+        setHeaderStats(null);
+      }
+    } else {
+      setHeaderStats(null);
+    }
+  }, [inputs.chitAmount, inputs.months, inputs.commissionPct]);
+
+  const calculateAuctionAmount = (chitAmount, months, commissionPct, auctionMonth, auctionPct) => {
+    // Define variables
+    const I = chitAmount / months; // monthly installment
+    const r = Math.pow(1 + (auctionPct / 100), 1/12) - 1; // monthly ROI rate
+    const k = auctionMonth;
+    const n = months;
+    
+    // Calculate summations
+    let S_before = 0;
+    for (let j = 1; j <= k - 1; j++) {
+      S_before += Math.pow(1 + r, j);
+    }
+    
+    let S_after = 0;
+    for (let j = 1; j <= n - k; j++) {
+      S_after += Math.pow(1 + r, -j);
+    }
+    
+    // Auction Amount at month k
+    let P = I * (S_before + 1 + S_after);
+    
+    // Apply cap and guards
+    const commission = chitAmount * commissionPct / 100;
+    const maxPayable = chitAmount - commission;
+    P = Math.min(P, maxPayable);
+    
+    if (P < 0) P = 0;
+    
+    // Round to nearest rupee
+    return Math.round(P);
+  };
+
+  const calculateChitChart = () => {
+    const { chitAmount, months, commissionPct, auctionMonth, members } = inputs;
+    
+    if (!chitAmount || !months || !auctionMonth || !members) {
       alert('Please fill all required fields');
       return;
     }
 
     const chit = parseFloat(chitAmount);
-    const months = parseInt(numberOfMonths);
-    const commission = parseFloat(commissionRate);
+    const monthsNum = parseInt(months);
+    const commission = parseFloat(commissionPct);
     const auction = parseInt(auctionMonth);
-    const members = parseInt(totalMembers);
+    const membersNum = parseInt(members);
     
-    if (chit <= 0 || months <= 0 || commission < 0 || auction <= 0 || auction > months || members <= 0) {
-      alert('Please enter valid values. Auction month should be within the total months.');
+    if (chit <= 0 || monthsNum < 2 || commission < 0 || auction <= 0 || auction > monthsNum || membersNum < 2) {
+      alert('Please enter valid values. Months and Members must be ≥ 2. Auction month should be within the total months.');
       return;
     }
 
-    // Calculate for ROI from 12% to 30%
+    // Calculate for Auction % from 12% to 30%
     const chartData = [];
-    for (let roi = 12; roi <= 30; roi++) {
-      // Commission Amount (fixed)
-      const commissionAmount = chit * (commission / 100);
-      
-      // Basic Auction Amount = Chit Amount - Commission Amount
-      const baseAuctionAmount = chit - commissionAmount;
-      
-      // For the specific case: 5,00,000 - 15,000 = 4,85,000 at 12%
-      // The auction amount should remain consistent as the base calculation
-      const auctionAmount = baseAuctionAmount;
-      
-      // Per Person Payable = Auction Amount / Total Members
-      const perPersonPayable = auctionAmount / members;
+    for (let auctionPct = 12; auctionPct <= 30; auctionPct++) {
+      const auctionAmount = calculateAuctionAmount(chit, monthsNum, commission, auction, auctionPct);
+      const commissionAmount = chit * commission / 100;
+      const perPersonPayable = auctionAmount / membersNum;
       
       chartData.push({
-        auctionPercentage: roi,
+        auctionPercentage: auctionPct,
         auctionAmount: auctionAmount,
-        perPersonPayable: perPersonPayable,
-        commissionAmount: commissionAmount
+        commissionAmount: commissionAmount,
+        perPersonPayable: perPersonPayable
       });
     }
 
     setResults({
       chartData: chartData,
       chitAmount: chit,
-      numberOfMonths: months,
-      commissionRate: commission,
+      months: monthsNum,
+      commissionPct: commission,
       auctionMonth: auction,
-      totalMembers: members
+      members: membersNum
     });
   };
 
   const resetCalculator = () => {
     setInputs({
       chitAmount: '',
-      numberOfMonths: '',
-      commissionRate: '3',
+      months: '',
+      commissionPct: '3',
       auctionMonth: '',
-      totalMembers: ''
+      members: ''
     });
     setResults(null);
+    setHeaderStats(null);
   };
 
   const downloadExcel = () => {
@@ -93,18 +145,18 @@ const ChitAmountChart = () => {
     // Prepare data for Excel
     const excelData = results.chartData.map(data => ({
       'Auction %': `${data.auctionPercentage}%`,
-      'Auction Amount (₹)': data.auctionAmount.toFixed(0),
-      'Auction Commission (₹)': data.commissionAmount.toFixed(0),
-      'Per Person Payable (₹)': data.perPersonPayable.toFixed(0)
+      'Auction Amount (₹)': data.auctionAmount,
+      'Auction Commission (₹)': data.commissionAmount,
+      'Per Person Payable (₹)': Math.round(data.perPersonPayable)
     }));
 
     // Add summary information
     const summaryData = [
       { 'Parameter': 'Chit Amount', 'Value': `₹${results.chitAmount.toLocaleString('en-IN')}` },
-      { 'Parameter': 'Duration', 'Value': `${results.numberOfMonths} months` },
-      { 'Parameter': 'Commission Rate', 'Value': `${results.commissionRate}%` },
+      { 'Parameter': 'Duration', 'Value': `${results.months} months` },
+      { 'Parameter': 'Commission Rate', 'Value': `${results.commissionPct}%` },
       { 'Parameter': 'Auction Month', 'Value': `Month ${results.auctionMonth}` },
-      { 'Parameter': 'Total Members', 'Value': `${results.totalMembers}` }
+      { 'Parameter': 'Total Members', 'Value': `${results.members}` }
     ];
 
     // Create workbook
@@ -119,7 +171,7 @@ const ChitAmountChart = () => {
     XLSX.utils.book_append_sheet(wb, ws2, "Summary");
 
     // Download file
-    XLSX.writeFile(wb, `Chit_Amount_Chart_${results.chitAmount}_${results.numberOfMonths}months.xlsx`);
+    XLSX.writeFile(wb, `Chit_Amount_Chart_${results.chitAmount}_Month${results.auctionMonth}.xlsx`);
   };
 
   const downloadPDF = () => {
@@ -134,7 +186,7 @@ const ChitAmountChart = () => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Chit Amount Chart - Sarvam Finance</title>
+          <title>Chit Amount Chart Calculator - Sarvam Finance</title>
           <style>
             body { font-family: Arial, sans-serif; margin: 20px; }
             .header { text-align: center; margin-bottom: 30px; }
@@ -148,17 +200,17 @@ const ChitAmountChart = () => {
         </head>
         <body>
           <div class="header">
-            <h1>CHIT Calculator Analysis</h1>
+            <h1>Chit Amount Chart Calculator</h1>
             <h2>SARVAM FINANCE AND CHIT FUNDS PVT LTD</h2>
           </div>
           
           <div class="summary">
             <h3>Chart Summary</h3>
             <p><strong>Chit Amount:</strong> ₹${results.chitAmount.toLocaleString('en-IN')}</p>
-            <p><strong>Duration:</strong> ${results.numberOfMonths} months</p>
-            <p><strong>Commission Rate:</strong> ${results.commissionRate}%</p>
+            <p><strong>Duration:</strong> ${results.months} months</p>
+            <p><strong>Commission Rate:</strong> ${results.commissionPct}%</p>
             <p><strong>Auction Month:</strong> Month ${results.auctionMonth}</p>
-            <p><strong>Total Members:</strong> ${results.totalMembers}</p>
+            <p><strong>Total Members:</strong> ${results.members}</p>
           </div>
 
           <table>
@@ -203,266 +255,225 @@ const ChitAmountChart = () => {
   return (
     <div className="bg-white rounded-xl shadow-lg p-8">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">CHIT Calculator</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Chit Amount Chart Calculator</h2>
         <p className="text-gray-600">
-          Calculate auction amounts and per-person payables across different ROI percentages with auction month adjustments
+          Calculate precise auction amounts based on auction month and ROI percentages using advanced financial modeling
         </p>
       </div>
 
-      <div className="lg:grid lg:grid-cols-2 lg:gap-12">
-        {/* Input Section */}
-        <div>
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Chart Parameters</h3>
-          
-          <div className="space-y-6">
-            <div>
-              <label htmlFor="chitAmount" className="block text-sm font-medium text-gray-700 mb-2">
-                Chit Amount (₹) *
-              </label>
-              <input
-                type="number"
-                id="chitAmount"
-                name="chitAmount"
-                value={inputs.chitAmount}
-                onChange={handleInputChange}
-                className="custom-input"
-                placeholder="e.g., 500000"
-                min="25000"
-                max="5000000"
-              />
-              <p className="text-xs text-gray-500 mt-1">Enter amount between ₹25,000 to ₹50,00,000</p>
-            </div>
-
-            <div>
-              <label htmlFor="numberOfMonths" className="block text-sm font-medium text-gray-700 mb-2">
-                Number of Months *
-              </label>
-              <input
-                type="number"
-                id="numberOfMonths"
-                name="numberOfMonths"
-                value={inputs.numberOfMonths}
-                onChange={handleInputChange}
-                className="custom-input"
-                placeholder="e.g., 20"
-                min="12"
-                max="50"
-              />
-              <p className="text-xs text-gray-500 mt-1">Duration between 12 to 50 months</p>
-            </div>
-
-            <div>
-              <label htmlFor="commissionRate" className="block text-sm font-medium text-gray-700 mb-2">
-                Commission Rate (%)
-              </label>
-              <select
-                id="commissionRate"
-                name="commissionRate"
-                value={inputs.commissionRate}
-                onChange={handleInputChange}
-                className="custom-select"
-              >
-                <option value="3">3% (Standard)</option>
-                <option value="5">5% (Premium)</option>
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="auctionMonth" className="block text-sm font-medium text-gray-700 mb-2">
-                Auction Month *
-              </label>
-              <input
-                type="number"
-                id="auctionMonth"
-                name="auctionMonth"
-                value={inputs.auctionMonth}
-                onChange={handleInputChange}
-                className="custom-input"
-                placeholder="e.g., 5"
-                min="1"
-                max={inputs.numberOfMonths || 50}
-              />
-              <p className="text-xs text-gray-500 mt-1">Month when auction takes place (affects amount)</p>
-            </div>
-
-            <div>
-              <label htmlFor="totalMembers" className="block text-sm font-medium text-gray-700 mb-2">
-                Total Members *
-              </label>
-              <input
-                type="number"
-                id="totalMembers"
-                name="totalMembers"
-                value={inputs.totalMembers}
-                onChange={handleInputChange}
-                className="custom-input"
-                placeholder="e.g., 20"
-                min="5"
-                max="50"
-              />
-              <p className="text-xs text-gray-500 mt-1">Number of members in the chit fund group</p>
-            </div>
+      {/* Input Section */}
+      <div className="bg-gray-50 rounded-lg p-6 mb-8">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Input Parameters</h3>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div>
+            <label htmlFor="chitAmount" className="block text-sm font-medium text-gray-700 mb-2">
+              Chit Amount (₹) *
+            </label>
+            <input
+              type="number"
+              id="chitAmount"
+              name="chitAmount"
+              value={inputs.chitAmount}
+              onChange={handleInputChange}
+              className="custom-input"
+              placeholder="e.g., 500000"
+              min="1000"
+            />
           </div>
 
-          <div className="flex space-x-4 mt-8">
-            <button
-              onClick={calculateChitChart}
-              className="btn-primary flex-1"
-            >
-              Generate Chart
-            </button>
-            <button
-              onClick={resetCalculator}
-              className="btn-secondary flex-1"
-            >
-              Reset
-            </button>
+          <div>
+            <label htmlFor="months" className="block text-sm font-medium text-gray-700 mb-2">
+              No. of Months *
+            </label>
+            <input
+              type="number"
+              id="months"
+              name="months"
+              value={inputs.months}
+              onChange={handleInputChange}
+              className="custom-input"
+              placeholder="e.g., 20"
+              min="2"
+              max="100"
+            />
           </div>
 
-          {/* Download Buttons */}
-          {results && (
-            <div className="mt-4 flex space-x-4">
+          <div>
+            <label htmlFor="commissionPct" className="block text-sm font-medium text-gray-700 mb-2">
+              Commission Rate (%)
+            </label>
+            <select
+              id="commissionPct"
+              name="commissionPct"
+              value={inputs.commissionPct}
+              onChange={handleInputChange}
+              className="custom-select"
+            >
+              <option value="3">3% (Standard)</option>
+              <option value="5">5% (Premium)</option>
+              <option value="4">4%</option>
+              <option value="2">2%</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="auctionMonth" className="block text-sm font-medium text-gray-700 mb-2">
+              Auction Month *
+            </label>
+            <input
+              type="number"
+              id="auctionMonth"
+              name="auctionMonth"
+              value={inputs.auctionMonth}
+              onChange={handleInputChange}
+              className="custom-input"
+              placeholder="e.g., 1"
+              min="1"
+              max={inputs.months || 100}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="members" className="block text-sm font-medium text-gray-700 mb-2">
+              Total Members *
+            </label>
+            <input
+              type="number"
+              id="members"
+              name="members"
+              value={inputs.members}
+              onChange={handleInputChange}
+              className="custom-input"
+              placeholder="e.g., 20"
+              min="2"
+              max="100"
+            />
+          </div>
+
+          <div className="flex items-end">
+            <div className="flex space-x-3 w-full">
               <button
-                onClick={downloadExcel}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex-1 flex items-center justify-center"
+                onClick={calculateChitChart}
+                className="btn-primary flex-1"
               >
-                <span className="mr-2">📊</span>
-                Download Excel
+                Generate Chart
               </button>
               <button
-                onClick={downloadPDF}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex-1 flex items-center justify-center"
+                onClick={resetCalculator}
+                className="btn-secondary flex-1"
               >
-                <span className="mr-2">📄</span>
-                Print/PDF
+                Reset
               </button>
             </div>
-          )}
-        </div>
-
-        {/* Results Section */}
-        <div>
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Analysis Results</h3>
-          
-          {results ? (
-            <div className="space-y-6">
-              {/* Summary */}
-              <div className="result-card">
-                <h4 className="font-bold text-gray-900 mb-3">Chart Summary</h4>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-600">Chit Amount:</span>
-                    <div className="font-semibold">₹{formatCurrency(results.chitAmount)}</div>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Duration:</span>
-                    <div className="font-semibold">{results.numberOfMonths} months</div>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Commission:</span>
-                    <div className="font-semibold">{results.commissionRate}%</div>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Auction Month:</span>
-                    <div className="font-semibold">Month {results.auctionMonth}</div>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Total Members:</span>
-                    <div className="font-semibold">{results.totalMembers}</div>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Best Case:</span>
-                    <div className="font-semibold text-green-600">₹{formatCurrency(results.chartData[0].perPersonPayable)}/person</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Key Insights */}
-              <div className="bg-blue-50 rounded-lg p-4">
-                <h4 className="font-bold text-blue-900 mb-2">Key Insights</h4>
-                <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Earlier auction month = Lower auction amounts</li>
-                  <li>• Lower ROI percentages = Higher per-person payables</li>
-                  <li>• Month {results.auctionMonth} adjustment factor applied</li>
-                  <li>• Commission: {results.commissionRate}% of chit amount</li>
-                </ul>
-              </div>
-            </div>
-          ) : (
-            <div className="result-card text-center py-12">
-              <div className="text-6xl mb-4">📊</div>
-              <h4 className="text-xl font-bold text-gray-900 mb-2">Enter Chart Parameters</h4>
-              <p className="text-gray-600">
-                Fill in all parameters on the left to generate the enhanced chit amount analysis
-              </p>
-            </div>
-          )}
+          </div>
         </div>
       </div>
 
-      {/* Data Table */}
-      {results && (
-        <div className="mt-12">
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Detailed Analysis Table</h3>
-          <div className="overflow-x-auto bg-white rounded-lg shadow">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-red-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
-                    Auction %
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
-                    Auction Amount (₹)
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
-                    Auction Commission (₹)
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
-                    Per Person Payable (₹)
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {results.chartData.map((data, index) => (
-                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {data.auctionPercentage}%
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-semibold">
-                      ₹{formatCurrency(data.auctionAmount)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-semibold">
-                      ₹{formatCurrency(data.commissionAmount)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
-                      ₹{formatCurrency(data.perPersonPayable)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* Header Stats */}
+      {headerStats && (
+        <div className="bg-blue-50 rounded-lg p-6 mb-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Header Stats (Fixed)</h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">₹{formatCurrency(headerStats.perInstallment)}</div>
+              <div className="text-sm text-gray-600">Per-Installment</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">₹{formatCurrency(headerStats.commissionAmount)}</div>
+              <div className="text-sm text-gray-600">Commission</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">₹{formatCurrency(headerStats.maxPayableToWinner)}</div>
+              <div className="text-sm text-gray-600">Max Payable to Winner</div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Information Section */}
+      {/* Download Buttons */}
+      {results && (
+        <div className="flex space-x-4 mb-8">
+          <button
+            onClick={downloadExcel}
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 flex items-center"
+          >
+            <span className="mr-2">📊</span>
+            Download Excel
+          </button>
+          <button
+            onClick={downloadPDF}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 flex items-center"
+          >
+            <span className="mr-2">📄</span>
+            Print/PDF
+          </button>
+        </div>
+      )}
+
+      {/* Results Table */}
+      {results ? (
+        <div className="overflow-x-auto bg-white rounded-lg shadow">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-red-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
+                  Auction %
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
+                  Auction Amount (₹)
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
+                  Auction Commission (₹)
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
+                  Per Person Payable (₹)
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {results.chartData.map((data, index) => (
+                <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {data.auctionPercentage}%
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-semibold">
+                    ₹{formatCurrency(data.auctionAmount)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-semibold">
+                    ₹{formatCurrency(data.commissionAmount)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
+                    ₹{formatCurrency(data.perPersonPayable)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <div className="text-6xl mb-4">📊</div>
+          <h4 className="text-xl font-bold text-gray-900 mb-2">Enter All Parameters</h4>
+          <p className="text-gray-600">
+            Fill in all required fields to generate the chit amount chart with precise calculations
+          </p>
+        </div>
+      )}
+
+      {/* Formula Information */}
       <div className="mt-12 bg-gray-50 rounded-lg p-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Understanding the Enhanced Chart</h3>
-        <div className="grid md:grid-cols-2 gap-6 text-sm text-gray-700">
-          <div>
-            <h4 className="font-semibold mb-2">New Calculation Logic:</h4>
-            <p>
-              The enhanced calculator includes <strong>auction month adjustment</strong> where earlier months receive 
-              lower amounts and later months receive higher amounts. This reflects the realistic chit fund dynamics.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Per Person Distribution:</h4>
-            <p>
-              The auction amount is distributed equally among all members, showing the exact per-person payable 
-              amount for each ROI scenario.
-            </p>
-          </div>
+        <h3 className="text-lg font-bold text-gray-900 mb-4">Calculation Method</h3>
+        <div className="text-sm text-gray-700 space-y-2">
+          <p><strong>Formula:</strong> P = I × (S_before + 1 + S_after)</p>
+          <p><strong>Where:</strong></p>
+          <ul className="list-disc list-inside space-y-1 ml-4">
+            <li>I = Monthly Installment (Chit Amount ÷ Months)</li>
+            <li>r = Monthly ROI Rate = (1 + Auction%)^(1/12) - 1</li>
+            <li>S_before = Sum of growth factors for past months</li>
+            <li>S_after = Sum of discount factors for future months</li>
+          </ul>
+          <p className="mt-3"><strong>Applied Cap:</strong> Min(Calculated Amount, Chit Amount - Commission)</p>
         </div>
       </div>
     </div>
