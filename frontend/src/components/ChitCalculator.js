@@ -398,19 +398,19 @@ const ChitCalculator = () => {
             <div className="space-y-3">
               <div>
                 <div className="text-sm text-green-600">Original Installment</div>
-                <div className="text-lg font-semibold text-green-800">{formatCurrency(results.originalInstallment)}</div>
+                <div className="text-lg font-semibold text-green-800">{formatCurrency(results.originalInstallment || 0)}</div>
               </div>
               <div>
                 <div className="text-sm text-green-600">Dividend per Person</div>
-                <div className="text-lg font-semibold text-green-800">{formatCurrency(results.dividendPerPerson)}</div>
+                <div className="text-lg font-semibold text-green-800">{formatCurrency(results.dividendPerPerson || 0)}</div>
               </div>
               <div>
                 <div className="text-sm text-green-600">Payable Installment</div>
-                <div className="text-xl font-bold text-green-800">{formatCurrency(results.payableInstallment)}</div>
+                <div className="text-xl font-bold text-green-800">{formatCurrency(results.payableInstallment || 0)}</div>
               </div>
               <div>
                 <div className="text-sm text-green-600">Monthly Savings</div>
-                <div className="text-2xl font-bold text-green-800">{results.monthlySavings.toFixed(2)}%</div>
+                <div className="text-2xl font-bold text-green-800">{results.monthlySavings ? results.monthlySavings.toFixed(2) : '0.00'}%</div>
               </div>
             </div>
           </div>
