@@ -27,6 +27,12 @@ const ChitCalculator = () => {
   const handleModeChange = (mode) => {
     setCalculationMode(mode);
     setResults(null);
+    // Clear the opposite mode's input when switching
+    if (mode === 'bidAmount') {
+      setInputs(prev => ({ ...prev, bidAmount: '' }));
+    } else {
+      setInputs(prev => ({ ...prev, bidInterest: '' }));
+    }
   };
 
   // Calculate results whenever inputs change
