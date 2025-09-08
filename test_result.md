@@ -198,13 +198,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Remove embedded chit fund calculator from ChitFundsSection.js"
-    - "Enhance ChitAmountChart.js with new logic and inputs"
-    - "Remove ChitFundCalculator from CalculatorsPage.js"
+    - "Test enhanced chit amount chart calculator functionality"
+    - "Test Excel and PDF download features"
+    - "Test calculator toggle on main page"
+    - "Test responsive design on both calculators page and main page"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
     - agent: "main"
-      message: "Starting implementation of enhanced Chit Amount Chart Calculator. Will remove old calculator components and implement new logic with Total Members input, auction month adjustment, and Per Person Payable calculations."
+      message: "Successfully completed all implementation tasks: 1) Removed old embedded calculator from main page, 2) Removed ChitFundCalculator from calculators page, 3) Deleted obsolete ChitFundCalculator.js file, 4) Enhanced ChitAmountChart.js with new inputs (Total Members), auction month adjustment logic, Per Person Payable calculation, and Excel/PDF download functionality, 5) Updated CalculatorsPage.js navigation, 6) Added enhanced calculator to main page with toggle functionality. Added xlsx library for Excel support. Ready for testing."
