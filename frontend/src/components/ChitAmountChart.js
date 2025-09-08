@@ -1,169 +1,94 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from "react";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import * as htmlToImage from "html-to-image";
 import * as XLSX from 'xlsx';
 
-const ChitAmountChart = () => {
-  const [inputs, setInputs] = useState({
-    chitAmount: '',
-    months: '',
-    commissionPct: '3',
-    auctionMonth: '',
-    members: ''
-  });
-  
-  const [results, setResults] = useState(null);
-  const [headerStats, setHeaderStats] = useState(null);
+export default function ChitAmountChart() {
+  const [chitAmount, setChitAmount] = useState(500000);
+  const [months, setMonths] = useState(20);
+  const [commissionPct, setCommissionPct] = useState(3);
+  const [auctionMonth, setAuctionMonth] = useState(1);
+  const [members, setMembers] = useState(20);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setInputs(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  const chartRef = useRef(null);
 
-  // Calculate header stats whenever inputs change
-  useEffect(() => {
-    const { chitAmount, months, commissionPct } = inputs;
-    
-    if (chitAmount && months && commissionPct) {
-      const chit = parseFloat(chitAmount);
-      const monthsNum = parseInt(months);
-      const commission = parseFloat(commissionPct);
-      
-      if (chit > 0 && monthsNum >= 2 && commission >= 0) {
-        const perInstallment = chit / monthsNum;
-        const commissionAmount = chit * commission / 100;
-        const maxPayableToWinner = chit - commissionAmount;
-        
-        setHeaderStats({
-          perInstallment,
-          commissionAmount,
-          maxPayableToWinner
-        });
-      } else {
-        setHeaderStats(null);
-      }
-    } else {
-      setHeaderStats(null);
-    }
-  }, [inputs.chitAmount, inputs.months, inputs.commissionPct]);
+  const installment = chitAmount / months;
+  const auctionCommission = chitAmount * (commissionPct / 100);
+  const maxPayable = chitAmount - auctionCommission;
 
-  const calculateAuctionAmount = (chitAmount, months, commissionPct, auctionMonth, auctionPct) => {
-    // Define variables
-    const I = chitAmount / months; // monthly installment
-    const annualRate = auctionPct / 100; // annual rate as decimal
-    const r = Math.pow(1 + annualRate, 1/12) - 1; // monthly ROI rate
-    const k = auctionMonth;
+  // Function to calculate Auction Amount
+  const calculateAuctionAmount = (auctionPct, k) => {
+    const I = installment;
+    const r = Math.pow(1 + auctionPct / 100, 1 / 12) - 1; // monthly ROI
     const n = months;
-    
-    // NPV = 0 approach: sum of all cash flows at month k should equal zero
-    // Past installments (months 1 to k-1): grown forward to month k
-    let npvPast = 0;
+
+    // Summations
+    let S_before = 0;
     for (let j = 1; j <= k - 1; j++) {
-      const periodsToGrow = k - j;
-      npvPast += I * Math.pow(1 + r, periodsToGrow);
+      S_before += Math.pow(1 + r, j);
     }
-    
-    // Current month k: receive P, pay I
-    // Future installments (months k+1 to n): discounted back to month k  
-    let npvFuture = 0;
-    for (let j = k + 1; j <= n; j++) {
-      const periodsToDiscount = j - k;
-      npvFuture += I * Math.pow(1 + r, -periodsToDiscount);
+
+    let S_after = 0;
+    for (let j = 1; j <= n - k; j++) {
+      S_after += Math.pow(1 + r, -j);
     }
-    
-    // At month k: NPV = -npvPast + P - I - npvFuture = 0
-    // Therefore: P = npvPast + I + npvFuture
-    let P = npvPast + I + npvFuture;
-    
-    // Apply cap and guards
-    const commission = chitAmount * commissionPct / 100;
-    const maxPayable = chitAmount - commission;
+
+    let P = I * (S_before + 1 + S_after);
+
+    // Apply caps
     P = Math.min(P, maxPayable);
-    
     if (P < 0) P = 0;
-    
-    // Round to nearest rupee
+
     return Math.round(P);
   };
 
-  const calculateChitChart = () => {
-    const { chitAmount, months, commissionPct, auctionMonth, members } = inputs;
-    
-    if (!chitAmount || !months || !auctionMonth || !members) {
-      alert('Please fill all required fields');
-      return;
-    }
+  // Prepare chart data
+  const data = [];
+  for (let pct = 12; pct <= 30; pct++) {
+    const auctionAmount = calculateAuctionAmount(pct, auctionMonth);
+    data.push({
+      pct,
+      auctionAmount,
+      perPerson: Math.round(auctionAmount / members),
+    });
+  }
 
-    const chit = parseFloat(chitAmount);
-    const monthsNum = parseInt(months);
-    const commission = parseFloat(commissionPct);
-    const auction = parseInt(auctionMonth);
-    const membersNum = parseInt(members);
-    
-    if (chit <= 0 || monthsNum < 2 || commission < 0 || auction <= 0 || auction > monthsNum || membersNum < 2) {
-      alert('Please enter valid values. Months and Members must be ≥ 2. Auction month should be within the total months.');
-      return;
-    }
-
-    // Calculate for Auction % from 12% to 30%
-    const chartData = [];
-    for (let auctionPct = 12; auctionPct <= 30; auctionPct++) {
-      const auctionAmount = calculateAuctionAmount(chit, monthsNum, commission, auction, auctionPct);
-      const commissionAmount = chit * commission / 100;
-      const perPersonPayable = auctionAmount / membersNum;
-      
-      chartData.push({
-        auctionPercentage: auctionPct,
-        auctionAmount: auctionAmount,
-        commissionAmount: commissionAmount,
-        perPersonPayable: perPersonPayable
-      });
-    }
-
-    setResults({
-      chartData: chartData,
-      chitAmount: chit,
-      months: monthsNum,
-      commissionPct: commission,
-      auctionMonth: auction,
-      members: membersNum
+  // Download Chart as PNG
+  const handleDownloadChart = () => {
+    if (chartRef.current === null) return;
+    htmlToImage.toPng(chartRef.current).then((dataUrl) => {
+      const link = document.createElement("a");
+      link.download = "auction-chart.png";
+      link.href = dataUrl;
+      link.click();
     });
   };
 
-  const resetCalculator = () => {
-    setInputs({
-      chitAmount: '',
-      months: '',
-      commissionPct: '3',
-      auctionMonth: '',
-      members: ''
-    });
-    setResults(null);
-    setHeaderStats(null);
-  };
-
+  // Download Excel
   const downloadExcel = () => {
-    if (!results) {
-      alert('Please generate chart first');
-      return;
-    }
-
     // Prepare data for Excel
-    const excelData = results.chartData.map(data => ({
-      'Auction %': `${data.auctionPercentage}%`,
-      'Auction Amount (₹)': data.auctionAmount,
-      'Auction Commission (₹)': data.commissionAmount,
-      'Per Person Payable (₹)': Math.round(data.perPersonPayable)
+    const excelData = data.map(item => ({
+      'Auction %': `${item.pct}%`,
+      'Auction Amount (₹)': item.auctionAmount,
+      'Auction Commission (₹)': auctionCommission,
+      'Per Person Payable (₹)': item.perPerson
     }));
 
     // Add summary information
     const summaryData = [
-      { 'Parameter': 'Chit Amount', 'Value': `₹${results.chitAmount.toLocaleString('en-IN')}` },
-      { 'Parameter': 'Duration', 'Value': `${results.months} months` },
-      { 'Parameter': 'Commission Rate', 'Value': `${results.commissionPct}%` },
-      { 'Parameter': 'Auction Month', 'Value': `Month ${results.auctionMonth}` },
-      { 'Parameter': 'Total Members', 'Value': `${results.members}` }
+      { 'Parameter': 'Chit Amount', 'Value': `₹${chitAmount.toLocaleString('en-IN')}` },
+      { 'Parameter': 'Duration', 'Value': `${months} months` },
+      { 'Parameter': 'Commission Rate', 'Value': `${commissionPct}%` },
+      { 'Parameter': 'Auction Month', 'Value': `Month ${auctionMonth}` },
+      { 'Parameter': 'Total Members', 'Value': `${members}` }
     ];
 
     // Create workbook
@@ -178,15 +103,11 @@ const ChitAmountChart = () => {
     XLSX.utils.book_append_sheet(wb, ws2, "Summary");
 
     // Download file
-    XLSX.writeFile(wb, `Chit_Amount_Chart_${results.chitAmount}_Month${results.auctionMonth}.xlsx`);
+    XLSX.writeFile(wb, `Chit_Amount_Chart_${chitAmount}_Month${auctionMonth}.xlsx`);
   };
 
+  // Download PDF
   const downloadPDF = () => {
-    if (!results) {
-      alert('Please generate chart first');
-      return;
-    }
-
     // Create a printable version
     const printWindow = window.open('', '_blank');
     const chartHTML = `
@@ -213,11 +134,11 @@ const ChitAmountChart = () => {
           
           <div class="summary">
             <h3>Chart Summary</h3>
-            <p><strong>Chit Amount:</strong> ₹${results.chitAmount.toLocaleString('en-IN')}</p>
-            <p><strong>Duration:</strong> ${results.months} months</p>
-            <p><strong>Commission Rate:</strong> ${results.commissionPct}%</p>
-            <p><strong>Auction Month:</strong> Month ${results.auctionMonth}</p>
-            <p><strong>Total Members:</strong> ${results.members}</p>
+            <p><strong>Chit Amount:</strong> ₹${chitAmount.toLocaleString('en-IN')}</p>
+            <p><strong>Duration:</strong> ${months} months</p>
+            <p><strong>Commission Rate:</strong> ${commissionPct}%</p>
+            <p><strong>Auction Month:</strong> Month ${auctionMonth}</p>
+            <p><strong>Total Members:</strong> ${members}</p>
           </div>
 
           <table>
@@ -230,12 +151,12 @@ const ChitAmountChart = () => {
               </tr>
             </thead>
             <tbody>
-              ${results.chartData.map(data => `
+              ${data.map(item => `
                 <tr>
-                  <td>${data.auctionPercentage}%</td>
-                  <td>₹${formatCurrency(data.auctionAmount)}</td>
-                  <td>₹${formatCurrency(data.commissionAmount)}</td>
-                  <td><strong>₹${formatCurrency(data.perPersonPayable)}</strong></td>
+                  <td>${item.pct}%</td>
+                  <td>₹${item.auctionAmount.toLocaleString('en-IN')}</td>
+                  <td>₹${auctionCommission.toLocaleString('en-IN')}</td>
+                  <td><strong>₹${item.perPerson.toLocaleString('en-IN')}</strong></td>
                 </tr>
               `).join('')}
             </tbody>
@@ -253,12 +174,6 @@ const ChitAmountChart = () => {
     printWindow.document.close();
   };
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
-
   return (
     <div className="bg-white rounded-xl shadow-lg p-8">
       <div className="text-center mb-8">
@@ -274,199 +189,179 @@ const ChitAmountChart = () => {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div>
-            <label htmlFor="chitAmount" className="block text-sm font-medium text-gray-700 mb-2">
-              Chit Amount (₹) *
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Chit Amount (₹)
             </label>
             <input
               type="number"
-              id="chitAmount"
-              name="chitAmount"
-              value={inputs.chitAmount}
-              onChange={handleInputChange}
+              value={chitAmount}
+              onChange={(e) => setChitAmount(Number(e.target.value))}
               className="custom-input"
-              placeholder="e.g., 500000"
-              min="1000"
             />
           </div>
 
           <div>
-            <label htmlFor="months" className="block text-sm font-medium text-gray-700 mb-2">
-              No. of Months *
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              No. of Months
             </label>
             <input
               type="number"
-              id="months"
-              name="months"
-              value={inputs.months}
-              onChange={handleInputChange}
+              value={months}
+              onChange={(e) => setMonths(Number(e.target.value))}
               className="custom-input"
-              placeholder="e.g., 20"
-              min="2"
-              max="100"
             />
           </div>
 
           <div>
-            <label htmlFor="commissionPct" className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Commission Rate (%)
             </label>
-            <select
-              id="commissionPct"
-              name="commissionPct"
-              value={inputs.commissionPct}
-              onChange={handleInputChange}
-              className="custom-select"
-            >
-              <option value="3">3% (Standard)</option>
-              <option value="5">5% (Premium)</option>
-              <option value="4">4%</option>
-              <option value="2">2%</option>
-            </select>
+            <input
+              type="number"
+              value={commissionPct}
+              onChange={(e) => setCommissionPct(Number(e.target.value))}
+              className="custom-input"
+            />
           </div>
 
           <div>
-            <label htmlFor="auctionMonth" className="block text-sm font-medium text-gray-700 mb-2">
-              Auction Month *
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Auction Month
             </label>
             <input
               type="number"
-              id="auctionMonth"
-              name="auctionMonth"
-              value={inputs.auctionMonth}
-              onChange={handleInputChange}
-              className="custom-input"
-              placeholder="e.g., 1"
               min="1"
-              max={inputs.months || 100}
+              max={months}
+              value={auctionMonth}
+              onChange={(e) => setAuctionMonth(Number(e.target.value))}
+              className="custom-input"
             />
           </div>
 
           <div>
-            <label htmlFor="members" className="block text-sm font-medium text-gray-700 mb-2">
-              Total Members *
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Total Members
             </label>
             <input
               type="number"
-              id="members"
-              name="members"
-              value={inputs.members}
-              onChange={handleInputChange}
+              value={members}
+              onChange={(e) => setMembers(Number(e.target.value))}
               className="custom-input"
-              placeholder="e.g., 20"
-              min="2"
-              max="100"
             />
-          </div>
-
-          <div className="flex items-end">
-            <div className="flex space-x-3 w-full">
-              <button
-                onClick={calculateChitChart}
-                className="btn-primary flex-1"
-              >
-                Generate Chart
-              </button>
-              <button
-                onClick={resetCalculator}
-                className="btn-secondary flex-1"
-              >
-                Reset
-              </button>
-            </div>
           </div>
         </div>
       </div>
 
       {/* Header Stats */}
-      {headerStats && (
-        <div className="bg-blue-50 rounded-lg p-6 mb-8">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Header Stats (Fixed)</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">₹{formatCurrency(headerStats.perInstallment)}</div>
-              <div className="text-sm text-gray-600">Per-Installment</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">₹{formatCurrency(headerStats.commissionAmount)}</div>
-              <div className="text-sm text-gray-600">Commission</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">₹{formatCurrency(headerStats.maxPayableToWinner)}</div>
-              <div className="text-sm text-gray-600">Max Payable to Winner</div>
-            </div>
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">Header Stats (Fixed)</h3>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600">₹{installment.toLocaleString('en-IN')}</div>
+            <div className="text-sm text-gray-600">Per-Installment</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-red-600">₹{auctionCommission.toLocaleString('en-IN')}</div>
+            <div className="text-sm text-gray-600">Commission</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">₹{maxPayable.toLocaleString('en-IN')}</div>
+            <div className="text-sm text-gray-600">Max Payable to Winner</div>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Download Buttons */}
-      {results && (
-        <div className="flex space-x-4 mb-8">
+      {/* Chart Section */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div ref={chartRef} className="w-full h-[400px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis 
+                dataKey="pct" 
+                label={{ value: "Auction %", position: "insideBottom", offset: -10 }} 
+              />
+              <YAxis
+                tickFormatter={(val) => `₹${val.toLocaleString()}`}
+                label={{ value: "Auction Amount (₹)", angle: -90, position: "insideLeft" }}
+              />
+              <Tooltip formatter={(val) => `₹${val.toLocaleString()}`} />
+              <Line 
+                type="monotone" 
+                dataKey="auctionAmount" 
+                stroke="#2563eb" 
+                strokeWidth={3} 
+                dot={{ fill: '#2563eb', strokeWidth: 2, r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+        
+        {/* Download Buttons */}
+        <div className="flex space-x-4 mt-4 justify-end">
+          <button
+            onClick={handleDownloadChart}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 flex items-center"
+          >
+            <span className="mr-2">📊</span>
+            Download Chart
+          </button>
           <button
             onClick={downloadExcel}
             className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 flex items-center"
           >
-            <span className="mr-2">📊</span>
+            <span className="mr-2">📈</span>
             Download Excel
           </button>
           <button
             onClick={downloadPDF}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 flex items-center"
+            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 flex items-center"
           >
             <span className="mr-2">📄</span>
             Print/PDF
           </button>
         </div>
-      )}
+      </div>
 
       {/* Results Table */}
-      {results ? (
-        <div className="overflow-x-auto bg-white rounded-lg shadow">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-red-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
-                  Auction %
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
-                  Auction Amount (₹)
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
-                  Auction Commission (₹)
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
-                  Per Person Payable (₹)
-                </th>
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-red-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
+                Auction %
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
+                Auction Amount (₹)
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
+                Auction Commission (₹)
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
+                Per Person Payable (₹)
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {data.map((item, index) => (
+              <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {item.pct}%
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-semibold">
+                  ₹{item.auctionAmount.toLocaleString('en-IN')}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-semibold">
+                  ₹{auctionCommission.toLocaleString('en-IN')}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
+                  ₹{item.perPerson.toLocaleString('en-IN')}
+                </td>
               </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {results.chartData.map((data, index) => (
-                <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {data.auctionPercentage}%
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-semibold">
-                    ₹{formatCurrency(data.auctionAmount)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-semibold">
-                    ₹{formatCurrency(data.commissionAmount)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
-                    ₹{formatCurrency(data.perPersonPayable)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <div className="text-6xl mb-4">📊</div>
-          <h4 className="text-xl font-bold text-gray-900 mb-2">Enter All Parameters</h4>
-          <p className="text-gray-600">
-            Fill in all required fields to generate the chit amount chart with precise calculations
-          </p>
-        </div>
-      )}
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Formula Information */}
       <div className="mt-12 bg-gray-50 rounded-lg p-6">
@@ -485,6 +380,4 @@ const ChitAmountChart = () => {
       </div>
     </div>
   );
-};
-
-export default ChitAmountChart;
+}
