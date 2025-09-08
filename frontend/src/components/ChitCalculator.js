@@ -49,13 +49,13 @@ const ChitCalculator = () => {
         if (calculationMode === 'bidAmount' && bidInterest) {
           // Calculate Bid Amount from Bid Interest
           const rate = parseFloat(bidInterest);
-          if (rate > 0) {
+          if (rate > 0 && remainingMonths > 0) {
             const bidAmt = (rate * chit * remainingMonths) / (12 * 100 + rate * remainingMonths);
             const biddingRate = ((bidAmt + commissionAmount) * 12 * 100) / ((chit - bidAmt - commissionAmount) * remainingMonths);
-            const bidderGet = chit - bidAmt - commissionAmount;
+            const bidderGet = Math.max(0, chit - bidAmt - commissionAmount);
             const dividendPerPerson = bidAmt / totalM;
             const payableInstallment = originalInstallment - dividendPerPerson;
-            const monthlySavings = (dividendPerPerson / originalInstallment) * 100;
+            const monthlySavings = originalInstallment > 0 ? (dividendPerPerson / originalInstallment) * 100 : 0;
             
             calculatedResults = {
               bidAmount: bidAmt,
@@ -71,12 +71,12 @@ const ChitCalculator = () => {
         } else if (calculationMode === 'bidInterest' && bidAmount) {
           // Calculate Bidding Rate from Bid Amount
           const bidAmt = parseFloat(bidAmount);
-          if (bidAmt >= 0 && bidAmt < chit) {
+          if (bidAmt >= 0 && bidAmt < chit && remainingMonths > 0) {
             const biddingRate = ((bidAmt + commissionAmount) * 12 * 100) / ((chit - bidAmt - commissionAmount) * remainingMonths);
-            const bidderGet = chit - bidAmt - commissionAmount;
+            const bidderGet = Math.max(0, chit - bidAmt - commissionAmount);
             const dividendPerPerson = bidAmt / totalM;
             const payableInstallment = originalInstallment - dividendPerPerson;
-            const monthlySavings = (dividendPerPerson / originalInstallment) * 100;
+            const monthlySavings = originalInstallment > 0 ? (dividendPerPerson / originalInstallment) * 100 : 0;
             
             calculatedResults = {
               bidAmount: bidAmt,
