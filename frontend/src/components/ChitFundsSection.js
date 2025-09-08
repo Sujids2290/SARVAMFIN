@@ -1,72 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ChitFundsSection = () => {
-  const [inputs, setInputs] = useState({
-    chitAmount: '',
-    numberOfMonths: '',
-    auctionPercentage: ''
-  });
-  
-  const [results, setResults] = useState(null);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setInputs(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const calculateChitFund = () => {
-    const { chitAmount, numberOfMonths, auctionPercentage } = inputs;
-    
-    if (!chitAmount || !numberOfMonths || !auctionPercentage) {
-      return;
-    }
-
-    const chit = parseFloat(chitAmount);
-    const months = parseInt(numberOfMonths);
-    const auctionRate = parseFloat(auctionPercentage);
-    const commission = 3; // Fixed 3%
-    
-    if (chit <= 0 || months <= 0 || auctionRate <= 0) {
-      return;
-    }
-
-    const monthlyContribution = chit / months;
-    const auctionDiscount = chit * (auctionRate / 100);
-    const commissionAmount = chit * (commission / 100);
-    const netDiscount = auctionDiscount - commissionAmount;
-    const benefitPerMember = netDiscount / months;
-    const monthlyPayable = monthlyContribution - benefitPerMember;
-
-    setResults({
-      monthlyContribution: monthlyContribution,
-      auctionDiscount: auctionDiscount,
-      commissionAmount: commissionAmount,
-      netDiscount: netDiscount,
-      benefitPerMember: benefitPerMember,
-      monthlyPayable: monthlyPayable
-    });
-  };
-
-  const resetCalculator = () => {
-    setInputs({
-      chitAmount: '',
-      numberOfMonths: '',
-      auctionPercentage: ''
-    });
-    setResults(null);
-  };
-
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
 
   const chitFundBenefits = [
     {
