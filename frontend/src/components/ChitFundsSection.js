@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ChitAmountChart from './ChitAmountChart';
 
 const ChitFundsSection = () => {
+  const [showCalculator, setShowCalculator] = useState(false);
 
   const chitFundBenefits = [
     {
