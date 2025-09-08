@@ -7,7 +7,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://project-merger.preview.emergentagent.com/api/:splat"
+  to = "https://finance-tools-5.preview.emergentagent.com/api/:splat"
   status = 200
 
 [[redirects]]

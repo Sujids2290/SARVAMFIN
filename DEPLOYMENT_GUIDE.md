@@ -64,7 +64,7 @@ Your website is now properly structured for hosting! Here's what's been set up:
 ## 🔧 BACKEND API CONFIGURATION
 
 Your frontend is configured to use the Emergent backend:
-`https://project-merger.preview.emergentagent.com/api`
+`https://finance-tools-5.preview.emergentagent.com/api`
 
 ### For Production:
 1. **Keep using Emergent backend** (recommended for quick setup)

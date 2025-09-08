@@ -197,8 +197,8 @@ A modern, professional financial services website for SARVAM FINANCE AND CHIT FU
    ```
 
 ### Current Deployment
-- **Live Website**: https://project-merger.preview.emergentagent.com
-- **API Docs**: https://project-merger.preview.emergentagent.com/api/docs
+- **Live Website**: https://finance-tools-5.preview.emergentagent.com
+- **API Docs**: https://finance-tools-5.preview.emergentagent.com/api/docs
 - **Status**: ✅ Fully Functional
 
 ## 📞 Support & Maintenance
