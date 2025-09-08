@@ -34,8 +34,12 @@ const CalculatorsPage = () => {
               <img 
                 src="https://customer-assets.emergentagent.com/job_project-merger/artifacts/tpuz0zal_Sarvam%20Logo%20%282%29.pdf.png" 
                 alt="Sarvam Finance Logo" 
-                className="h-12 w-auto"
+                className="h-12 w-auto mr-3"
               />
+              <div>
+                <h1 className="text-lg font-bold text-gray-900 leading-tight">SARVAM FINANCE</h1>
+                <p className="text-xs text-gray-600 leading-tight">& CHIT FUNDS PVT LTD</p>
+              </div>
             </Link>
             
             <nav className="hidden md:flex space-x-6">
