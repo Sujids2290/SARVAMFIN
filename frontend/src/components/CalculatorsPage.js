@@ -83,16 +83,6 @@ const CalculatorsPage = () => {
                 EMI Calculator
               </button>
               <button
-                onClick={() => handleCalculatorSwitch('chitfund')}
-                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
-                  activeCalculator === 'chitfund'
-                    ? 'bg-red-600 text-white shadow-md'
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                Chit Fund Calculator
-              </button>
-              <button
                 onClick={() => handleCalculatorSwitch('chitchart')}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                   activeCalculator === 'chitchart'
@@ -109,7 +99,6 @@ const CalculatorsPage = () => {
         {/* Calculator Components */}
         <div className="max-w-4xl mx-auto">
           {activeCalculator === 'emi' && <EMICalculator />}
-          {activeCalculator === 'chitfund' && <ChitFundCalculator />}
           {activeCalculator === 'chitchart' && <ChitAmountChart />}
         </div>
 
