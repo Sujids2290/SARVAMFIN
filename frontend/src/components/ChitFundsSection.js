@@ -144,7 +144,7 @@ const ChitFundsSection = () => {
                   to="/calculators"
                   className="btn-primary text-center"
                 >
-                  Chit Fund Calculator
+                  Chit Amount Chart
                 </Link>
                 <button 
                   onClick={() => {
