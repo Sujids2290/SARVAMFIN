@@ -4,10 +4,24 @@ import EMICalculator from './EMICalculator';
 import ChitCalculator from './ChitCalculator';
 
 const CalculatorsPage = () => {
+  const [activeCalculator, setActiveCalculator] = useState('emi');
+
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Function to handle calculator switching with scroll to top
+  const handleCalculatorSwitch = (calculatorType) => {
+    setActiveCalculator(calculatorType);
+    // Scroll to calculators section smoothly
+    setTimeout(() => {
+      const calculatorSection = document.querySelector('.max-w-4xl');
+      if (calculatorSection) {
+        calculatorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
