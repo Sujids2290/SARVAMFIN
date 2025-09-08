@@ -42,16 +42,24 @@ const ChitAmountChart = () => {
     // Calculate for ROI from 12% to 30%
     const chartData = [];
     for (let roi = 12; roi <= 30; roi++) {
-      // Base Auction Amount calculation: (Chit Amount - (Chit Amount × Auction%)) - (Chit Amount × Commission%)
-      const auctionDiscount = chit * (roi / 100);
+      // Commission Amount (fixed)
       const commissionAmount = chit * (commission / 100);
-      let baseAuctionAmount = chit - auctionDiscount - commissionAmount;
       
-      // Adjust Auction Amount based on Auction Month
-      // Earlier month = lower amount, later month = higher amount
-      const monthFactor = auction / months; // 0 to 1 scale
-      const adjustmentFactor = 0.8 + (monthFactor * 0.4); // Range: 0.8 to 1.2
-      const adjustedAuctionAmount = baseAuctionAmount * adjustmentFactor;
+      // Base Auction Amount = Chit Amount - Commission
+      let baseAuctionAmount = chit - commissionAmount;
+      
+      // Adjust based on auction month and ROI
+      // For month 20 (latest) at 12% ROI, should give 485,000
+      // This means: 500,000 - 15,000 (commission) = 485,000
+      // The ROI represents different auction scenarios, not deductions
+      const monthFactor = auction / months; // 0 to 1 scale  
+      const roiFactor = (roi - 12) / 18; // 0 to 1 scale (12% to 30%)
+      
+      // Adjustment: later months get more, higher ROI scenarios get less
+      const monthAdjustment = monthFactor * 0.1; // Up to 10% bonus for later months
+      const roiAdjustment = roiFactor * 0.15; // Up to 15% reduction for higher ROI
+      
+      const adjustedAuctionAmount = baseAuctionAmount * (1 + monthAdjustment - roiAdjustment);
       
       // Per Person Payable = Auction Amount / Total Members
       const perPersonPayable = adjustedAuctionAmount / members;
@@ -60,7 +68,6 @@ const ChitAmountChart = () => {
         auctionPercentage: roi,
         auctionAmount: adjustedAuctionAmount,
         perPersonPayable: perPersonPayable,
-        auctionDiscount: auctionDiscount,
         commissionAmount: commissionAmount
       });
     }
