@@ -8,7 +8,7 @@ const ChitCalculator = () => {
     chitAmount: '',
     months: '',
     commissionRate: '3',
-    auctionAmount: '',
+    currentAuctionMonth: '',
     totalMembers: ''
   });
   
@@ -24,28 +24,28 @@ const ChitCalculator = () => {
 
   // Calculate results whenever inputs change
   useEffect(() => {
-    const { chitAmount, months, commissionRate, auctionAmount, totalMembers } = inputs;
+    const { chitAmount, months, commissionRate, currentAuctionMonth, totalMembers } = inputs;
     
-    if (chitAmount && months && commissionRate && auctionAmount && totalMembers) {
+    if (chitAmount && months && commissionRate && currentAuctionMonth && totalMembers) {
       const chit = parseFloat(chitAmount);
       const monthsNum = parseInt(months);
       const commission = parseFloat(commissionRate);
-      const auction = parseFloat(auctionAmount);
+      const currentMonth = parseInt(currentAuctionMonth);
       const members = parseInt(totalMembers);
       
-      if (chit > 0 && monthsNum > 0 && commission >= 0 && auction >= 0 && members > 0) {
+      if (chit > 0 && monthsNum > 0 && commission >= 0 && currentMonth > 0 && currentMonth <= monthsNum && members > 0) {
         const calculatedResults = [];
         
         // Generate results for Auction Percentage from 12% to 30%
         for (let auctionPct = 12; auctionPct <= 30; auctionPct++) {
           const commissionAmount = chit * commission / 100;
-          const auctionAmountCalc = chit * auctionPct / 100;
-          const perPersonPayable = (chit - auctionAmountCalc - commissionAmount) / members;
+          const auctionAmount = chit * auctionPct / 100 * (currentMonth / monthsNum);
+          const perPersonPayable = (chit - auctionAmount - commissionAmount) / members;
           
           calculatedResults.push({
             auctionPercentage: auctionPct,
             commission: commissionAmount,
-            auctionAmount: auctionAmountCalc,
+            auctionAmount: auctionAmount,
             perPersonPayable: perPersonPayable
           });
         }
@@ -64,7 +64,7 @@ const ChitCalculator = () => {
       chitAmount: '',
       months: '',
       commissionRate: '3',
-      auctionAmount: '',
+      currentAuctionMonth: '',
       totalMembers: ''
     });
     setResults([]);
@@ -89,7 +89,7 @@ const ChitCalculator = () => {
       { 'Parameter': 'Chit Amount', 'Value': `₹${parseFloat(inputs.chitAmount).toLocaleString('en-IN')}` },
       { 'Parameter': 'Duration', 'Value': `${inputs.months} months` },
       { 'Parameter': 'Commission Rate', 'Value': `${inputs.commissionRate}%` },
-      { 'Parameter': 'Auction Amount Input', 'Value': `₹${parseFloat(inputs.auctionAmount).toLocaleString('en-IN')}` },
+      { 'Parameter': 'Current Auction Month', 'Value': `Month ${inputs.currentAuctionMonth}` },
       { 'Parameter': 'Total Members', 'Value': `${inputs.totalMembers}` }
     ];
 
@@ -105,7 +105,7 @@ const ChitCalculator = () => {
     XLSX.utils.book_append_sheet(wb, ws2, "Input Summary");
 
     // Download file
-    XLSX.writeFile(wb, `Chit_Calculator_${inputs.chitAmount}_${inputs.months}months.xlsx`);
+    XLSX.writeFile(wb, `Chit_Amount_Chart_${inputs.chitAmount}_Month${inputs.currentAuctionMonth}.xlsx`);
   };
 
   const downloadPDF = () => {
@@ -132,7 +132,7 @@ const ChitCalculator = () => {
     doc.text(`Chit Amount: ₹${parseFloat(inputs.chitAmount).toLocaleString('en-IN')}`, 20, 50);
     doc.text(`Duration: ${inputs.months} months`, 20, 58);
     doc.text(`Commission Rate: ${inputs.commissionRate}%`, 20, 66);
-    doc.text(`Auction Amount Input: ₹${parseFloat(inputs.auctionAmount).toLocaleString('en-IN')}`, 20, 74);
+    doc.text(`Current Auction Month: Month ${inputs.currentAuctionMonth}`, 20, 74);
     doc.text(`Total Members: ${inputs.totalMembers}`, 20, 82);
     
     // Prepare table data
@@ -164,7 +164,7 @@ const ChitCalculator = () => {
     });
     
     // Save the PDF
-    doc.save(`Chit_Calculator_${inputs.chitAmount}_${inputs.months}months.pdf`);
+    doc.save(`Chit_Amount_Chart_${inputs.chitAmount}_Month${inputs.currentAuctionMonth}.pdf`);
   };
 
   const formatCurrency = (amount) => {
@@ -178,7 +178,7 @@ const ChitCalculator = () => {
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-4">Chit Amount Chart Calculator</h2>
         <p className="text-gray-600">
-          Calculate chit fund returns across different auction percentages with precise calculations
+          Calculate chit fund returns across different auction percentages with month-based auction amounts
         </p>
       </div>
 
@@ -239,18 +239,19 @@ const ChitCalculator = () => {
           </div>
 
           <div>
-            <label htmlFor="auctionAmount" className="block text-sm font-medium text-gray-700 mb-2">
-              Auction Amount (₹) *
+            <label htmlFor="currentAuctionMonth" className="block text-sm font-medium text-gray-700 mb-2">
+              Current Auction Month *
             </label>
             <input
               type="number"
-              id="auctionAmount"
-              name="auctionAmount"
-              value={inputs.auctionAmount}
+              id="currentAuctionMonth"
+              name="currentAuctionMonth"
+              value={inputs.currentAuctionMonth}
               onChange={handleInputChange}
               className="custom-input"
-              placeholder="e.g., 60000"
-              min="0"
+              placeholder="e.g., 10"
+              min="1"
+              max={inputs.months || 100}
             />
           </div>
 
@@ -358,9 +359,9 @@ const ChitCalculator = () => {
         <h3 className="text-lg font-bold text-gray-900 mb-4">Calculation Formula</h3>
         <div className="text-sm text-gray-700 space-y-2">
           <p><strong>Commission:</strong> Chit Amount × Commission Rate ÷ 100</p>
-          <p><strong>Auction Amount:</strong> Chit Amount × Auction Percentage ÷ 100</p>
+          <p><strong>Auction Amount:</strong> Chit Amount × Auction Percentage ÷ 100 × (Current Auction Month ÷ No of Months)</p>
           <p><strong>Per Person Payable:</strong> (Chit Amount - Auction Amount - Commission) ÷ Total Members</p>
-          <p className="mt-3 text-blue-600"><strong>Note:</strong> The table shows calculations for auction percentages from 12% to 30%, incrementing by 1%.</p>
+          <p className="mt-3 text-blue-600"><strong>Note:</strong> The auction amount is adjusted based on the current auction month. Later months result in higher auction amounts.</p>
         </div>
       </div>
     </div>
