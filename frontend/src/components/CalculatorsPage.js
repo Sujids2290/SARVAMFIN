@@ -66,7 +66,7 @@ const CalculatorsPage = () => {
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Our expert team is here to help you make the best financial decisions. 
-              Contact us for personalized advice and solutions.
+              Contact us for personalized advice and loan solutions.
             </p>
           </div>
           
