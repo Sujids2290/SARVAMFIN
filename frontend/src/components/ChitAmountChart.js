@@ -209,7 +209,7 @@ const ChitAmountChart = () => {
   return (
     <div className="bg-white rounded-xl shadow-lg p-8">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Enhanced Chit Amount Chart</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">CHIT Calculator</h2>
         <p className="text-gray-600">
           Calculate auction amounts and per-person payables across different ROI percentages with auction month adjustments
         </p>
