@@ -175,6 +175,7 @@ const ChitAmountChart = () => {
               <tr>
                 <th>Auction %</th>
                 <th>Auction Amount (₹)</th>
+                <th>Auction Commission (₹)</th>
                 <th>Per Person Payable (₹)</th>
               </tr>
             </thead>
@@ -183,6 +184,7 @@ const ChitAmountChart = () => {
                 <tr>
                   <td>${data.auctionPercentage}%</td>
                   <td>₹${formatCurrency(data.auctionAmount)}</td>
+                  <td>₹${formatCurrency(data.commissionAmount)}</td>
                   <td><strong>₹${formatCurrency(data.perPersonPayable)}</strong></td>
                 </tr>
               `).join('')}
