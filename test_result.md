@@ -119,64 +119,76 @@ backend:
 
 frontend:
   - task: "Remove embedded chit fund calculator from ChitFundsSection.js"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "/app/frontend/src/components/ChitFundsSection.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
-        - working: "NA"
+        - working: true
           agent: "main"
-          comment: "Need to remove lines 256-390 and replace with link to new calculator"
+          comment: "Successfully removed embedded calculator and added enhanced calculator with toggle functionality"
 
   - task: "Remove ChitFundCalculator from CalculatorsPage.js"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "/app/frontend/src/components/CalculatorsPage.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
-        - working: "NA"
+        - working: true
           agent: "main"
-          comment: "Remove old ChitFundCalculator import and references"
+          comment: "Removed import and references, updated navigation to show only EMI and Chit Amount Chart calculators"
 
   - task: "Delete ChitFundCalculator.js file"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "/app/frontend/src/components/ChitFundCalculator.js"
     stuck_count: 0
     priority: "medium"
     needs_retesting: false
     status_history:
-        - working: "NA"
+        - working: true
           agent: "main"
-          comment: "Remove obsolete calculator file"
+          comment: "Successfully deleted obsolete calculator file"
 
   - task: "Enhance ChitAmountChart.js with new logic and inputs"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "/app/frontend/src/components/ChitAmountChart.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
-        - working: "NA"
+        - working: true
           agent: "main"
-          comment: "Add Total Members input, implement new Auction Amount logic with month adjustment, add Per Person Payable calculation, enhance Excel/PDF download"
+          comment: "Completely rebuilt with new inputs (Total Members), enhanced logic with auction month adjustment, Per Person Payable calculation, Excel/PDF download functionality. Installed xlsx library for Excel support."
 
   - task: "Update CalculatorsPage.js to show only EMI and enhanced Chit Amount Chart"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "/app/frontend/src/components/CalculatorsPage.js"
     stuck_count: 0
     priority: "medium"
     needs_retesting: true
     status_history:
-        - working: "NA"
+        - working: true
           agent: "main"
-          comment: "Update navigation to only show 2 calculators instead of 3"
+          comment: "Updated navigation to show only 2 calculators, removed old ChitFundCalculator references"
+
+  - task: "Add enhanced calculator to main page with toggle functionality"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/ChitFundsSection.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Added enhanced calculator to main page with show/hide toggle functionality"
 
 metadata:
   created_by: "main_agent"
