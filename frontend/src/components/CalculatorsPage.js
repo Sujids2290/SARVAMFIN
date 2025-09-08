@@ -45,7 +45,7 @@ const CalculatorsPage = () => {
               <Link to="/" className="text-gray-700 hover:text-red-600 font-medium transition-colors">
                 Home
               </Link>
-              <span className="text-red-600 font-medium">EMI Calculator</span>
+              <span className="text-red-600 font-medium">Finance Calculators</span>
             </nav>
             
             <Link to="/" className="btn-primary">
