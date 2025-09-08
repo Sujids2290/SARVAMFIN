@@ -424,6 +424,9 @@ const ChitAmountChart = () => {
                     Auction Amount (₹)
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
+                    Auction Commission (₹)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-red-600 uppercase tracking-wider">
                     Per Person Payable (₹)
                   </th>
                 </tr>
@@ -436,6 +439,9 @@ const ChitAmountChart = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-semibold">
                       ₹{formatCurrency(data.auctionAmount)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-semibold">
+                      ₹{formatCurrency(data.commissionAmount)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
                       ₹{formatCurrency(data.perPersonPayable)}
