@@ -90,7 +90,7 @@ const CalculatorsPage = () => {
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                Chit Amount Chart
+                Chit Calculator
               </button>
             </div>
           </div>
