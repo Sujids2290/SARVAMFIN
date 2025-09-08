@@ -45,28 +45,19 @@ const ChitAmountChart = () => {
       // Commission Amount (fixed)
       const commissionAmount = chit * (commission / 100);
       
-      // Base Auction Amount = Chit Amount - Commission
-      let baseAuctionAmount = chit - commissionAmount;
+      // Basic Auction Amount = Chit Amount - Commission Amount
+      const baseAuctionAmount = chit - commissionAmount;
       
-      // Adjust based on auction month and ROI
-      // For month 20 (latest) at 12% ROI, should give 485,000
-      // This means: 500,000 - 15,000 (commission) = 485,000
-      // The ROI represents different auction scenarios, not deductions
-      const monthFactor = auction / months; // 0 to 1 scale  
-      const roiFactor = (roi - 12) / 18; // 0 to 1 scale (12% to 30%)
-      
-      // Adjustment: later months get more, higher ROI scenarios get less
-      const monthAdjustment = monthFactor * 0.1; // Up to 10% bonus for later months
-      const roiAdjustment = roiFactor * 0.15; // Up to 15% reduction for higher ROI
-      
-      const adjustedAuctionAmount = baseAuctionAmount * (1 + monthAdjustment - roiAdjustment);
+      // For the specific case: 5,00,000 - 15,000 = 4,85,000 at 12%
+      // The auction amount should remain consistent as the base calculation
+      const auctionAmount = baseAuctionAmount;
       
       // Per Person Payable = Auction Amount / Total Members
-      const perPersonPayable = adjustedAuctionAmount / members;
+      const perPersonPayable = auctionAmount / members;
       
       chartData.push({
         auctionPercentage: roi,
-        auctionAmount: adjustedAuctionAmount,
+        auctionAmount: auctionAmount,
         perPersonPayable: perPersonPayable,
         commissionAmount: commissionAmount
       });
