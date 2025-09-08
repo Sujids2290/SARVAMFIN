@@ -157,7 +157,7 @@ const ChitAmountChart = () => {
         </head>
         <body>
           <div class="header">
-            <h1>Enhanced Chit Amount Chart Analysis</h1>
+            <h1>CHIT Calculator Analysis</h1>
             <h2>SARVAM FINANCE AND CHIT FUNDS PVT LTD</h2>
           </div>
           
