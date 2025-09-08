@@ -195,6 +195,13 @@ const ChitFundsSection = () => {
             </div>
           </div>
         </div>
+        
+        {/* Enhanced Chit Amount Chart Calculator */}
+        {showCalculator && (
+          <div className="mt-12">
+            <ChitAmountChart />
+          </div>
+        )}
 
 
       </div>
